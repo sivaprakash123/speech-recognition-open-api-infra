@@ -4,31 +4,29 @@ config:
       - en
       - hi
       - bn
-      - pa
-    cpu:
-      count: 4
+    gpu:
+      count: 1
+      accelerator: 'Tesla-T4'
   - languages:
       - mr
       - mai
       - te
       - ne
-    cpu:
-      count: 4
+    gpu:
+      count: 1
+      accelerator: 'Tesla-T4'
   - languages:
       - gu
       - kn
       - ta
-      - doi
-      - raj
-    cpu:
-      count: 2
+    gpu:
+      count: 1
+      accelerator: 'Tesla-T4'
   - languages:
       - ur
       - ml
       - or
       - sa
-      - bo
-    cpu:
-      count: 4
-
-  
+    gpu:
+      count: 1
+      accelerator: 'Tesla-T4'

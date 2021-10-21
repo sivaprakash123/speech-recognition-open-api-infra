@@ -8,7 +8,7 @@ pipeline {
                     properties([
                         parameters([
                             booleanParam(
-                                defaultValue: true, 
+                                defaultValue: false, 
                                 name: 'API_UPDATED'
                             ),
                             booleanParam(
@@ -24,7 +24,7 @@ pipeline {
                                 name: 'IMAGE_NAME'
                             ),
                             string(
-                                defaultValue: '2.1.0', 
+                                defaultValue: '2.0.1', 
                                 name: 'IMAGE_VERSION'
                             )
                         ])
@@ -34,16 +34,8 @@ pipeline {
         }
         stage("Deploy") {
             steps {
-                sh "chmod +x ./scripts/install_helm.sh"
-                sh "./scripts/install_helm.sh"
-                withCredentials([
-                    file(credentialsId: 'meity-eks-kube', variable: 'KUBECONFIG'),
-                    string(credentialsId: 'meity-eks-iam-access', variable: 'AWS_ACCESS_KEY_ID'),
-	                string(credentialsId: 'meity-eks-iam-secret', variable: 'AWS_SECRET_ACCESS_KEY')
-                ]) {
-                    sh 'python3 -m pip install pyyaml'
+                    sh "kubectl get pods -n nltm"
                     sh "python3 deploy.py --namespace $params.NAMESPACE --api-updated $params.API_UPDATED --enable-ingress $params.ENABLE_INGRESS --image-name $params.IMAGE_NAME --image-version $params.IMAGE_VERSION"
-                }
             }
         }
     }
