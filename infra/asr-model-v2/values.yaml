@@ -15,17 +15,17 @@ nameOverride: ""
 fullnameOverride: ""
 
 volumes:
-  name: modelsvolume
-  pdName: modelsv2
-  readOnly: true
-  fsType: ext4
-  mountPath: /opt/speech_recognition_open_api/deployed_models/
-  # claimName: exascaler-csi-file-driver-pvc-persistent2
-  # name: samba-volume
-  # path: /nlsasfs/home/ekstep/nltm-speech
-  # path: /opt/share/aai4b/asr_models
-  # type: Directory
+  # name: modelsvolume
+  # pdName: modelsv2
+  # readOnly: true
+  # fsType: ext4
   # mountPath: /opt/speech_recognition_open_api/deployed_models/
+  # claimName: exascaler-csi-file-driver-pvc-persistent2
+  name: samba-volume
+  # path: /nlsasfs/home/ekstep/nltm-speech
+  path: /opt/share/aai4b/asr_models
+  type: Directory
+  mountPath: /opt/speech_recognition_open_api/deployed_models/
 
 serviceAccount:
   # Specifies whether a service account should be created
