@@ -4,6 +4,7 @@ config:
       - en
       - hi
       - bn
+      - as
     gpu:
       count: 1
       accelerator: 'Tesla-T4'
@@ -12,6 +13,7 @@ config:
       - mai
       - te
       - ne
+      - doi
     gpu:
       count: 1
       accelerator: 'Tesla-T4'
@@ -19,6 +21,8 @@ config:
       - gu
       - kn
       - ta
+      - pa
+      - raj
     gpu:
       count: 1
       accelerator: 'Tesla-T4'
@@ -27,6 +31,7 @@ config:
       - ml
       - or
       - sa
+      - bo
     gpu:
       count: 1
       accelerator: 'Tesla-T4'
