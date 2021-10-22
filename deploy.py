@@ -374,7 +374,7 @@ if __name__ == "__main__":
     release_base_name = app_config["base_name"]
     configuration = app_config["config"]
 
-    existing_releases = get_releases(release_base_name, namespace)
+    # existing_releases = get_releases(release_base_name, namespace)
     new_releases = []
     for item in configuration:
         gpu_count = 0
@@ -406,7 +406,7 @@ if __name__ == "__main__":
             new_releases.append(language_config.release_name)
 
     # removed_releases = 
-    remove_unwanted_releases(new_releases, existing_releases, namespace)
+    # remove_unwanted_releases(new_releases, existing_releases, namespace)
     # clear_clusters_and_matches(envoy_config, removed_releases)
 
     write_to_yaml(envoy_config, envoy_config_path)
