@@ -8,7 +8,7 @@ pipeline {
                     properties([
                         parameters([
                             booleanParam(
-                                defaultValue: false, 
+                                defaultValue: true, 
                                 name: 'API_UPDATED'
                             ),
                             booleanParam(
@@ -16,7 +16,7 @@ pipeline {
                                 name: 'ENABLE_INGRESS'
                             ),
                             string(
-                                defaultValue: 'asr-model-v2', 
+                                defaultValue: 'nltm', 
                                 name: 'NAMESPACE'
                             ),
                             string(
@@ -24,7 +24,7 @@ pipeline {
                                 name: 'IMAGE_NAME'
                             ),
                             string(
-                                defaultValue: '2.0.1', 
+                                defaultValue: '2.1.1', 
                                 name: 'IMAGE_VERSION'
                             )
                         ])
