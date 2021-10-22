@@ -6,7 +6,7 @@ config:
       - bn
       - as
     gpu:
-      count: 1
+      count: 0
       accelerator: 'Tesla-T4'
   - languages:
       - mr
@@ -15,7 +15,7 @@ config:
       - ne
       - doi
     gpu:
-      count: 1
+      count: 0
       accelerator: 'Tesla-T4'
   - languages:
       - gu
@@ -24,7 +24,7 @@ config:
       - pa
       - raj
     gpu:
-      count: 1
+      count: 0
       accelerator: 'Tesla-T4'
   - languages:
       - ur
@@ -33,5 +33,5 @@ config:
       - sa
       - bo
     gpu:
-      count: 1
+      count: 0
       accelerator: 'Tesla-T4'
