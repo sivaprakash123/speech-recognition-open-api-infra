@@ -47,7 +47,7 @@ jobs:
       - run:
           name: Release model using helm chart
           command: |
-            python3 deploy.py --namespace << pipeline.parameters.NAMESPACE >> --api-updated << pipeline.parameters.API_UPDATED >> --enable-ingress << pipeline.parameters.ENABLE_INGRESS >> --image-name << pipeline.parameters.IMAGE_NAME >> --image-version << pipeline.parameters.IMAGE_VERSION >>
+            python3 deploy.py --namespace << pipeline.parameters.NAMESPACE >> --api-updated << pipeline.parameters.API_UPDATED >> --enable-ingress << pipeline.parameters.ENABLE_INGRESS >> --image-name gcr.io/${GCP_PROJECT}/<< pipeline.parameters.IMAGE_NAME >> --image-version << pipeline.parameters.IMAGE_VERSION >>
       - run:
           name: Install nginx pod
           command: kubectl apply -f infra/nginx/nginx.yml -n << pipeline.parameters.NAMESPACE >>
