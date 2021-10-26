@@ -24,7 +24,7 @@ spec:
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       volumes:
-        # - name: {{ .Values.volumes.name }}
+         - name: {{ .Values.volumes.name }}
         #   hostPath:
         #     path: {{ .Values.volumes.path }}
         #     type: {{ .Values.volumes.type }}
