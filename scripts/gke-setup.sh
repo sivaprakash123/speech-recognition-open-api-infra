@@ -1,4 +1,5 @@
 echo ${GOOGLE_AUTH} > ${HOME}/gcp-key.json
+cat ${HOME}/gcp-key.json
 pip3 install google_compute_engine
 gcloud auth activate-service-account --key-file ${HOME}/gcp-key.json
 gcloud --quiet config set project ${GCP_PROJECT}
