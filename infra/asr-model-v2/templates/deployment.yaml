@@ -24,17 +24,17 @@ spec:
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       volumes:
-        - name: {{ .Values.volumes.name }}
-          hostPath:
-            path: {{ .Values.volumes.path }}
-            type: {{ .Values.volumes.type }}
+        # - name: {{ .Values.volumes.name }}
+        #   hostPath:
+        #     path: {{ .Values.volumes.path }}
+        #     type: {{ .Values.volumes.type }}
 #          persistentVolumeClaim:
 #            claimName: {{ .Values.volumes.claimName }}
 #            readOnly: {{ .Values.volumes.readOnly }}
-#          gcePersistentDisk:
-#            pdName: {{ .Values.volumes.pdName }}
-#            fsType: {{ .Values.volumes.fsType }}
-#            readOnly: {{ .Values.volumes.readOnly }}
+        - gcePersistentDisk:
+           pdName: {{ .Values.volumes.pdName }}
+           fsType: {{ .Values.volumes.fsType }}
+           readOnly: {{ .Values.volumes.readOnly }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:

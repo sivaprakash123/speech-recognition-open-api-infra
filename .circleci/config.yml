@@ -1,0 +1,64 @@
+version: 2.1
+
+parameters:
+  # This parameter is used to trigger the main workflow
+  NAMESPACE:
+    type: string
+    default: 'asr-model-v2'
+  IMAGE_NAME:
+    type: string
+    default: speech_recognition_model_api
+  IMAGE_VERSION:
+    type: string
+    default: "2.1.1"
+  API_UPDATED:
+    type: boolean
+    default: true
+  ENABLE_INGRESS:
+    type: boolean
+    default: false
+
+jobs:
+  deploy_api_to_platform:
+    machine:
+      image: ubuntu-2004:202101-01
+      resource_class: 2xlarge
+    working_directory: ~/speech-recognition-model-api/
+    steps:
+      - checkout:
+          path: ~/speech-recognition-model-api
+      - run:
+          name: Library installation
+          command: pip3 install pyyaml
+      - run:
+          name: Install and confgure kubectl
+          command: sudo curl -L "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" -o /usr/local/bin/kubectl && sudo chmod +x /usr/local/bin/kubectl
+      - run:
+          name: Install and configuire helm
+          command: sh scripts/install_helm.sh
+      - run:
+          name: Configure platform
+          command: sh scripts/gke-setup.sh
+      - run:
+          name: Release model using helm chart
+          command: |
+            python3 deploy.py --namespace << pipeline.parameters.NAMESPACE >> --api-updated << pipeline.parameters.API_UPDATED >> --enable-ingress << pipeline.parameters.ENABLE_INGRESS >> --image-name << pipeline.parameters.IMAGE_NAME >> --image-version << pipeline.parameters.IMAGE_VERSION >>
+      - run:
+          name: Install nginx pod
+          command: kubectl apply -f infra/nginx/nginx.yml -n << pipeline.parameters.NAMESPACE >>
+      - run:
+          name: Remove account details
+          command: |
+            rm ${HOME}/gcp-key.json ; ls
+
+workflows:
+  version: 2
+  main_workflow:
+    jobs:
+    - deploy_api_to_platform:
+        name: deploy_api_to_platform
+        filters:
+          branches:
+            only: gke-deploy
+
+
