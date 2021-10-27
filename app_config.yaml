@@ -4,31 +4,24 @@ config:
       - en
       - hi
       - bn
-      - pa
-    cpu:
-      count: 4
   - languages:
       - mr
       - mai
       - te
+  - languages:
       - ne
-    cpu:
-      count: 4
+      - pa
+      - sa
+      - as
   - languages:
       - gu
       - kn
       - ta
+  - languages:
       - doi
       - raj
-    cpu:
-      count: 2
+      - bo
   - languages:
       - ur
       - ml
       - or
-      - sa
-      - bo
-    cpu:
-      count: 4
-
-  

@@ -20,9 +20,8 @@ parameters:
 
 jobs:
   deploy_api_to_platform:
-    machine:
-      image: ubuntu-2004:202101-01
-      resource_class: 2xlarge
+    docker:
+      - image: cimg/python:3.10.0
     working_directory: ~/speech-recognition-model-api/
     steps:
       - checkout:
