@@ -46,7 +46,7 @@ ingress:
   # ingress.hosts -- ingress accepted hostnames
   hosts:
     - host: model-api.vakyansh.in
-      paths: ["/"]
+      paths: ["/", "/asr/"]
   # ingress.tls -- ingress TLS configuration
   tls:
     - secretName: "asr-model-v2-envoy-secret"

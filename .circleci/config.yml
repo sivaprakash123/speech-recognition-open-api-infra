@@ -16,7 +16,7 @@ parameters:
     default: true
   ENABLE_INGRESS:
     type: boolean
-    default: false
+    default: true
 
 jobs:
   deploy_api_to_platform:
