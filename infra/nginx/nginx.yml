@@ -27,12 +27,6 @@ data:
         gzip_buffers 16 8k;
         gzip_min_length 512;
 
-
-        location / {
-            resolver 127.0.0.11;
-            return 302 /asr/;
-        }
-
         location / {
             resolver 127.0.0.11;
             proxy_pass  http://asr-model-v2-envoy/;
