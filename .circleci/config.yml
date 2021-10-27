@@ -40,8 +40,8 @@ jobs:
           command: |
             echo ${GOOGLE_AUTH} > ${HOME}/gcp-key.json
             pip3 install google_compute_engine
-            gcloud auth activate-service-account --key-file ${HOME}/gcp-key.json
-            gcloud --quiet config set project ${GCP_PROJECT}
+            python3 -m gcloud auth activate-service-account --key-file ${HOME}/gcp-key.json
+            python3 -m gcloud --quiet config set project ${GCP_PROJECT}
             sh scripts/gke-setup.sh
       - run:
           name: Release model using helm chart
