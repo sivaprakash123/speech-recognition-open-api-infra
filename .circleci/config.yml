@@ -10,7 +10,7 @@ parameters:
     default: speech_recognition_model_api
   IMAGE_VERSION:
     type: string
-    default: "2.1.1"
+    default: "2.1.2"
   API_UPDATED:
     type: boolean
     default: true
