@@ -45,13 +45,13 @@ ingress:
   # kubernetes.io/tls-acme: "true"
   # ingress.hosts -- ingress accepted hostnames
   hosts:
-    - host: test-model-api.vakyansh.in
+    - host: model-api.vakyansh.in
       paths: ["/"]
   # ingress.tls -- ingress TLS configuration
   tls:
     - secretName: "asr-model-v2-envoy-secret"
       hosts:
-        - test-model-api.vakyansh.in
+        - model-api.vakyansh.in
 
 # resources -- custom resource configuration
 resources: {}
