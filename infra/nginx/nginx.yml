@@ -84,20 +84,20 @@ spec:
         # - containerPort: 443
         #   name: https
           protocol: TCP
-        volumeMounts:
-        - mountPath: /etc/nginx/conf.d # mount nginx-conf volumn to /etc/nginx
-          readOnly: true
-          name: nginx-conf
-        - mountPath: "/etc/nginx/ssl"
-          name: nginx-asr-ssl
-          readOnly: true
+#        volumeMounts:
+#        - mountPath: /etc/nginx/conf.d # mount nginx-conf volumn to /etc/nginx
+#          readOnly: true
+#          name: nginx-conf
+#        - mountPath: "/etc/nginx/ssl"
+#          name: nginx-asr-ssl
+#          readOnly: true
       #   - mountPath: /etc/ssl
       #     readOnly: true
       #     name: ssl-certificates-creds
       volumes:
-      - name: nginx-asr-ssl
-        secret:
-          secretName: nginx-asr-ssl
+#      - name: nginx-asr-ssl
+#        secret:
+#          secretName: nginx-asr-ssl
       - name: nginx-conf
         configMap:
           name: nginx-conf # place ConfigMap `nginx-conf` on /etc/nginx
