@@ -5,35 +5,35 @@ config:
       - hi
       - bn
     cpu:
-        count: 2
+        count: 1
   - languages:
       - mr
       - mai
       - te
     cpu:
-        count: 2
+        count: 1
   - languages:
       - ne
       - pa
       - sa
       - as
     cpu:
-        count: 2
+        count: 1
   - languages:
       - gu
       - kn
       - ta
     cpu:
-        count: 2
+        count: 1
   - languages:
       - doi
       - raj
       - bo
     cpu:
-        count: 2
+        count: 1
   - languages:
       - ur
       - ml
       - or
     cpu:
-        count: 2
+        count: 1
