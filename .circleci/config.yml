@@ -20,8 +20,8 @@ parameters:
 
 jobs:
   deploy_api_to_platform:
-    docker:
-      - image: cimg/python:3.10.0
+    machine:
+      image: ubuntu-2004:202101-01
     working_directory: ~/speech-recognition-model-api/
     steps:
       - checkout:
@@ -40,8 +40,8 @@ jobs:
           command: |
             echo ${GOOGLE_AUTH} > ${HOME}/gcp-key.json
             pip3 install google_compute_engine
-            python3 -m gcloud auth activate-service-account --key-file ${HOME}/gcp-key.json
-            python3 -m gcloud --quiet config set project ${GCP_PROJECT}
+            gcloud auth activate-service-account --key-file ${HOME}/gcp-key.json
+            gcloud --quiet config set project ${GCP_PROJECT}
             sh scripts/gke-setup.sh
       - run:
           name: Release model using helm chart
