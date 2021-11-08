@@ -4,19 +4,19 @@ parameters:
   # This parameter is used to trigger the main workflow
   NAMESPACE:
     type: string
-    default: 'asr-model-v2'
+    default: 'test'
   IMAGE_NAME:
     type: string
     default: speech_recognition_model_api
   IMAGE_VERSION:
     type: string
-    default: "2.1.2"
+    default: "2.1.5"
   API_UPDATED:
     type: boolean
-    default: false
+    default: true
   ENABLE_INGRESS:
     type: boolean
-    default: true
+    default: false
 
 jobs:
   deploy_api_to_platform:
