@@ -27,7 +27,7 @@ kubectl create secret tls asr-model-v2-secret \
   --cert=vakyansh-secret/vakyansh.crt \
   --key=vakyansh-secret/vakyansh.key -n test
 ```
-### Next steps:
+### Next steps for k8s deployment using helm:
 - Go to infra root folder by running the following if not already inside infra folder: `cd infra`
 - To deploy models, do the following:
     1. Do changes if needed in asr-model-v2
@@ -45,6 +45,21 @@ kubectl create secret tls asr-model-v2-secret \
     1. Do changes and package it(Follow steps 1 and 2 in above steps).
     2. Run the following to install: `helm upgrade <release-name> envoy/ -n <namespace>`
 
+### Next steps for deployment using circle-ci:
+- Go to the root folder of the project.
+- Configure the circleci config file in .circelci folder(eg: the parameter values to set the k8s namespace, deployment image).
+- Add the project to your circle-ci account.
+- Make changes if required to deploy.py.
+- Once code is pushed to git, the deployment will be done.
+
+
+### Next steps for deployment using jenkins:
+- Go to the root folder of the project.
+- Configure the Jenkins config file in project root folder according to your cloud infra(currently configured for aws)
+(eg: the parameter values to set the k8s namespace, deployment image).
+- Add the project to your jenkins account.
+- Make changes if required to deploy.py.
+- Once code is pushed to git, the deployment will be done.
 ### Reference:
 1. For the installation command to deploy 
 
