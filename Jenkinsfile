@@ -16,7 +16,7 @@ pipeline {
                                 name: 'ENABLE_INGRESS'
                             ),
                             string(
-                                defaultValue: 'asr-model-v2', 
+                                defaultValue: 'test',
                                 name: 'NAMESPACE'
                             ),
                             string(
@@ -24,7 +24,7 @@ pipeline {
                                 name: 'IMAGE_NAME'
                             ),
                             string(
-                                defaultValue: '2.1.0', 
+                                defaultValue: '2.1.6',
                                 name: 'IMAGE_VERSION'
                             )
                         ])
