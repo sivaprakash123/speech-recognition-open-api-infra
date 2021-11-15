@@ -12,6 +12,21 @@ static_resources:
       - name: envoy.filters.network.http_connection_manager
         typed_config:
           "@type": type.googleapis.com/envoy.extensions.filters.network.http_connection_manager.v3.HttpConnectionManager
+          local_reply_config:
+             mappers:
+             - filter:
+                  status_code_filter:
+                    comparison:
+                      op: EQ
+                      value:
+                        default_value: 400
+                        runtime_key: key_b
+               status_code: 400
+               body_format_override:
+                  json_format:
+                    status: 'ERROR'
+                    message: 'Invalid input value!'
+                  content_type: "application/json"
           stat_prefix: grpc_json
           access_log:
           - name: envoy.access_loggers.file
