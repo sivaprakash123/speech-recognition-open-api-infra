@@ -63,8 +63,7 @@ resources: {}
 #   memory: 128Mi
 
 # nodeSelector -- node for scheduler pod assignment
-nodeSelector:
-  accelerator : Tesla-T4
+nodeSelector: {}
 
 # tolerations -- tolerations for scheduler pod assignment
 tolerations: []
