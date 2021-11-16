@@ -1,15 +1,18 @@
-import yaml
 import argparse
-from collections import OrderedDict
-import os
 import subprocess
+from collections import OrderedDict
+
+import yaml
+
 
 def ordered_load(stream, Loader=yaml.SafeLoader, object_pairs_hook=OrderedDict):
     class OrderedLoader(Loader):
         pass
+
     def construct_mapping(loader, node):
         loader.flatten_mapping(node)
         return object_pairs_hook(loader.construct_pairs(node))
+
     OrderedLoader.add_constructor(
         yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG,
         construct_mapping)
@@ -151,9 +154,43 @@ class EnvoyConfig:
             process = "install"
         else:
             process = "upgrade"
-        
-        command = "helm {0} --timeout 180s {1} {2} --namespace {3} --set ingress.enabled='{4}'".format(process, self.release_name, self.helm_chart_path, namespace, enable_ingress)
+
+        command = "helm {0} --timeout 180s {1} {2} --namespace {3} --set ingress.enabled='{4}'".format(process,
+                                                                                                       self.release_name,
+                                                                                                       self.helm_chart_path,
+                                                                                                       namespace,
+                                                                                                       enable_ingress)
         cmd_runner(command, "Envoy")
+
+
+class ProxyConfig:
+
+    def __init__(self, base_name, helm_chart_path):
+        self.name = "proxy"
+        self.helm_chart_path = helm_chart_path
+        self.release_name = "{}-{}".format(base_name, self.name)
+
+    def is_deployed(self, namespace):
+        result = subprocess.getoutput('helm status {} -n {} --output yaml'.format(self.release_name, namespace))
+        if "release: not found" in result.lower():
+            return False
+        else:
+            return True
+
+    def deploy(self, namespace):
+        isdeployed = self.is_deployed(namespace)
+        if not isdeployed:
+            process = "install"
+        else:
+            process = "upgrade"
+
+        command = "helm {0} --timeout 180s {1} {2} --namespace {3} ".format(process,
+                                                                            self.release_name,
+                                                                            self.helm_chart_path,
+                                                                            namespace
+                                                                            )
+        cmd_runner(command, "proxy")
+
 
 def read_app_config(config_path):
     with open(config_path, "r") as stream:
@@ -349,6 +386,7 @@ if __name__ == "__main__":
     envoy_config_path = "infra/envoy/config.yaml"
     language_helm_chart_path = "infra/asr-model-v2"
     envoy_helm_chart_path = "infra/envoy"
+    proxy_helm_chart_path = "infra/asr-proxy"
     envoy_config = read_envoy_config(envoy_config_path)
     app_config = read_app_config(app_config_path)
 
@@ -411,3 +449,4 @@ if __name__ == "__main__":
 
     write_to_yaml(envoy_config, envoy_config_path)
     EnvoyConfig(release_base_name, envoy_helm_chart_path).deploy(namespace, enable_ingress)
+    ProxyConfig(release_base_name, proxy_helm_chart_path).deploy(namespace)
