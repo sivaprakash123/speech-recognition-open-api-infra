@@ -285,15 +285,16 @@ def update_envoy_config(config, language_config):
     # updating match filter
     language_codes = language_config.get_language_code_as_list()
     for language_code in language_codes:
-        grpc_match_route = get_grpc_match_filter(routes, language_code)
-        if grpc_match_route is None:
-            grpc_match_route = create_grpc_match_filter(language_code, cluster["name"])
-            routes.insert(len(routes)-2, grpc_match_route)
+        for method_name in ["recognize", "punctuate"]:
+            grpc_match_route = get_grpc_match_filter(method_name, routes, language_code)
+            if grpc_match_route is None:
+                grpc_match_route = create_grpc_match_filter(method_name, language_code, cluster["name"])
+                routes.insert(len(routes)-2, grpc_match_route)
 
-        rest_match_route = get_rest_match_filter(routes, language_code)
-        if rest_match_route is None:
-            rest_match_route = create_rest_match_filter(language_code, cluster["name"])
-            routes.insert(len(routes)-2, rest_match_route)
+            rest_match_route = get_rest_match_filter(method_name, routes, language_code)
+            if rest_match_route is None:
+                rest_match_route = create_rest_match_filter(method_name, language_code, cluster["name"])
+                routes.insert(len(routes)-2, rest_match_route)
     
     return config
 
@@ -304,45 +305,46 @@ def write_to_yaml(config, path):
         except yaml.YAMLError as exc:
             print("Error: ", exc)
 
-def create_grpc_match_filter(language_code, cluster_name):
+def create_grpc_match_filter(method_name, language_code, cluster_name):
     route_match = '''
         match:
-          prefix: "/ekstep.speech_recognition.SpeechRecognizer/recognize"
+          prefix: "/ekstep.speech_recognition.SpeechRecognizer/{}"
           headers:
           - name: language
             exact_match: "hi"
         route: {cluster: hi_cluster, timeout: 60s}
-    ''' 
+    '''.format(method_name)
     route_match = ordered_load(route_match, yaml.SafeLoader)
     route_match["match"]["headers"][0]["exact_match"] = language_code
     route_match["route"]["cluster"] = cluster_name
     return route_match
 
-def create_rest_match_filter(language_code, cluster_name):
+def create_rest_match_filter(method_name, language_code, cluster_name):
     route_match = '''
         match:
-          prefix: "/v1/recognize/hi"
+          prefix: "/v1/{}/hi"
         route: {cluster: hi_cluster, timeout: 60s}
-    '''
+    '''.format(method_name)
     route_match = ordered_load(route_match, yaml.SafeLoader)
     route_match["match"]["prefix"] = "/v1/recognize/{}".format(language_code)
     route_match["route"]["cluster"] = cluster_name
     return route_match
 
-def get_grpc_match_filter(routes, language_code):
-    path_to_match = "/ekstep.speech_recognition.SpeechRecognizer/recognize"
+def get_grpc_match_filter(method_name, routes, language_code):
+    path_to_match = "/ekstep.speech_recognition.SpeechRecognizer/{}".format(method_name)
     for route in routes:
         if route["match"]["prefix"] == path_to_match:
             if "headers" in route["match"] and route["match"]["headers"][0]["exact_match"] == language_code:
                 return route
     return None
 
-def get_rest_match_filter(routes, language_code):
-    path_to_match = "/v1/recognize/{}".format(language_code)
+def get_rest_match_filter(method_name, routes, language_code):
+    path_to_match = "/v1/{}/{}".format(method_name, language_code)
     for route in routes:
         if route["match"]["prefix"] == path_to_match:
             return route
     return None
+
 
 def update_proto_descriptor(config, path_to_pb_file):
     pass
