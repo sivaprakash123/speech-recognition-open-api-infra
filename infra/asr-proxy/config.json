@@ -1,31 +1,28 @@
 {
-    "35.192.29.24:55102": [
-        "ta",
-        "bo",
-        "bn",
-        "en-IN-BIO",
-        "ne",
-        "kn"
+  "asr-model-v2-envoy:80": {
+    "languages": [
+      "ta",
+      "bo",
+      "bn",
+      "en-IN-BIO",
+      "ne",
+      "kn",
+      "raj",
+      "mal",
+      "or",
+      "sa",
+      "mai",
+      "ur",
+      "asm",
+      "doi",
+      "gu",
+      "te",
+      "mr",
+      "pa",
+      "en-test",
+      "hi",
+      "en-IN"
     ],
-    "35.232.162.125:55102": [
-        "raj",
-        "mal",
-        "or",
-        "sa",
-        "mai",
-        "ur",
-        "asm",
-        "doi"
-    ],
-    "34.72.59.101:55102": [
-	    "gu",
-	    "te",
-	    "mr",
-	    "pa"
-    ],
-    "35.225.39.113:50051": [
-	    "hi",
-	    "en-IN"
-    ]
-
+    "maxConnectionCount": 1
+  }
 }
