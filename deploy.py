@@ -366,7 +366,7 @@ def update_proto_descriptor(config, path_to_pb_file):
 def get_releases(base_name, namespace):
     result = subprocess.getoutput('helm list -f "^{}-(.*)" -n {} -o yaml'.format(base_name, namespace))
     release_list = ordered_load(result, yaml.SafeLoader)
-    return [release["name"] for release in release_list if release["name"] != "{}-envoy".format(base_name)]
+    return [release["name"] for release in release_list if release["name"] != "{}-envoy".format(base_name) and release["name"] != "{}-proxy".format(base_name)]
 
 def uninstall_release(release, namespace):
     command = "helm uninstall {} -n {}".format(release, namespace)
@@ -459,9 +459,7 @@ if __name__ == "__main__":
             envoy_config = update_envoy_config(envoy_config, language_config)
             new_releases.append(language_config.release_name)
 
-    # removed_releases = 
     remove_unwanted_releases(new_releases, existing_releases, namespace)
-    # clear_clusters_and_matches(envoy_config, removed_releases)
 
     write_to_yaml(envoy_config, envoy_config_path)
     EnvoyConfig(release_base_name, envoy_helm_chart_path).deploy(namespace, enable_ingress)
