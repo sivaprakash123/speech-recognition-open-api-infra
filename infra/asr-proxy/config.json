@@ -4,24 +4,23 @@
       "ta",
       "bo",
       "bn",
-      "en-IN-BIO",
+      "en_bio",
       "ne",
       "kn",
       "raj",
-      "mal",
+      "ml",
       "or",
       "sa",
       "mai",
       "ur",
-      "asm",
+      "as",
       "doi",
       "gu",
       "te",
       "mr",
       "pa",
-      "en-test",
       "hi",
-      "en-IN"
+      "en"
     ],
     "maxConnectionCount": 10000
   }
