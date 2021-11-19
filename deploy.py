@@ -322,7 +322,9 @@ def create_grpc_match_filter(method_name, language_code, cluster_name):
           headers:
           - name: language
             exact_match: "hi"
-        route: {cluster: hi_cluster, timeout: 60s}
+        route:
+          cluster: hi_cluster
+          timeout: 60s
     '''.format(method_name)
     route_match = ordered_load(route_match, yaml.SafeLoader)
     route_match["match"]["headers"][0]["exact_match"] = language_code
@@ -333,7 +335,9 @@ def create_rest_match_filter(method_name, language_code, cluster_name):
     route_match = '''
         match:
           prefix: "/v1/{}/hi"
-        route: {cluster: hi_cluster, timeout: 60s}
+        route:
+          cluster: hi_cluster
+          timeout: 60s
     '''.format(method_name)
     route_match = ordered_load(route_match, yaml.SafeLoader)
     route_match["match"]["prefix"] = "/v1/recognize/{}".format(language_code)
