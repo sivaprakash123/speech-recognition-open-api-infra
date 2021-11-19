@@ -270,6 +270,13 @@ def verify_and_update_release_name(cluster, release_name):
         cluster["load_assignment"]["endpoints"][0]["lb_endpoints"][0]["endpoint"]["address"]["socket_address"]["address"] = release_name
 
 def update_envoy_config(config, language_config):
+
+    methods_config = [
+        { "name" : "recognize", "enable_grpc_match" : True, "enable_rest_match" : True },
+        { "name" : "punctuate", "enable_grpc_match" : True, "enable_rest_match" : True }, 
+        { "name" : "recognize_audio", "enable_grpc_match" : True, "enable_rest_match" : False }
+    ]
+
     listeners = config["static_resources"]["listeners"]
     clusters = config["static_resources"]["clusters"]
     routes = listeners[0]["filter_chains"][0]["filters"][0]["typed_config"]["route_config"]["virtual_hosts"][0]["routes"]
@@ -285,16 +292,19 @@ def update_envoy_config(config, language_config):
     # updating match filter
     language_codes = language_config.get_language_code_as_list()
     for language_code in language_codes:
-        for method_name in ["recognize", "punctuate"]:
-            grpc_match_route = get_grpc_match_filter(method_name, routes, language_code)
-            if grpc_match_route is None:
-                grpc_match_route = create_grpc_match_filter(method_name, language_code, cluster["name"])
-                routes.insert(len(routes)-2, grpc_match_route)
+        for method_config in methods_config:
+            method_name = method_config["name"]
+            if "enable_grpc_match" in method_config and (method_config["enable_grpc_match"] == True):
+                grpc_match_route = get_grpc_match_filter(method_name, routes, language_code)
+                if grpc_match_route is None:
+                    grpc_match_route = create_grpc_match_filter(method_name, language_code, cluster["name"])
+                    routes.insert(len(routes)-2, grpc_match_route)
 
-            rest_match_route = get_rest_match_filter(method_name, routes, language_code)
-            if rest_match_route is None:
-                rest_match_route = create_rest_match_filter(method_name, language_code, cluster["name"])
-                routes.insert(len(routes)-2, rest_match_route)
+            if "enable_rest_match" in method_config and (method_config["enable_rest_match"] == True):
+                rest_match_route = get_rest_match_filter(method_name, routes, language_code) 
+                if rest_match_route is None:
+                    rest_match_route = create_rest_match_filter(method_name, language_code, cluster["name"])
+                    routes.insert(len(routes)-2, rest_match_route)
     
     return config
 
