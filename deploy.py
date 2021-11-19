@@ -340,7 +340,7 @@ def create_rest_match_filter(method_name, language_code, cluster_name):
           timeout: 60s
     '''.format(method_name)
     route_match = ordered_load(route_match, yaml.SafeLoader)
-    route_match["match"]["prefix"] = "/v1/recognize/{}".format(language_code)
+    route_match["match"]["prefix"] = "/v1/{}/{}".format(method_name, language_code)
     route_match["route"]["cluster"] = cluster_name
     return route_match
 
