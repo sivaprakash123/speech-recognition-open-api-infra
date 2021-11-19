@@ -23,6 +23,6 @@
       "hi",
       "en-IN"
     ],
-    "maxConnectionCount": 1
+    "maxConnectionCount": 10000
   }
 }
