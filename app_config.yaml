@@ -6,6 +6,7 @@ config:
       - pa
     gpu:
       count: 0
+      accelerator: ''
   - languages:
       - mr
       - mai
@@ -13,6 +14,7 @@ config:
       - ne
     gpu:
       count: 0
+      accelerator: ''
   - languages:
       - gu
       - kn
@@ -21,15 +23,18 @@ config:
       - raj
     gpu:
       count: 0
+      accelerator: ''
   - languages:
       - ur
       - ml
       - hi
     gpu:
       count: 0
+      accelerator: ''
   - languages:
       - or
       - sa
       - bho
     gpu:
       count: 0
+      accelerator: ''
