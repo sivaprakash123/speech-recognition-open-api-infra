@@ -47,24 +47,6 @@ static_resources:
               domains: ["*"]
               routes:
                 - match:
-                    path: "/ekstep.speech_recognition.SpeechRecognizer/recognize"
-                  direct_response:
-                    status: 404
-                    body:
-                      inline_string: "Not Found\n"
-                - match:
-                    path: "/ekstep.speech_recognition.SpeechRecognizer/recognize_audio"
-                  direct_response:
-                    status: 404
-                    body:
-                      inline_string: "Not Found\n"
-                - match:
-                    path: "/ekstep.speech_recognition.SpeechRecognizer/punctuate"
-                  direct_response:
-                    status: 404
-                    body:
-                      inline_string: "Not Found\n"
-                - match:
                     prefix: "/"
                   direct_response:
                     status: 404
