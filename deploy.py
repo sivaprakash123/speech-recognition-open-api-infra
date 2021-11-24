@@ -346,7 +346,7 @@ def write_to_yaml(config, path):
 def create_grpc_match_filter(method_name, language_code, cluster_name):
     route_match = '''
         match:
-          prefix: "/ekstep.speech_recognition.SpeechRecognizer/{}"
+          path: "/ekstep.speech_recognition.SpeechRecognizer/{}"
           headers:
           - name: language
             exact_match: "hi"
@@ -363,13 +363,13 @@ def create_grpc_match_filter(method_name, language_code, cluster_name):
 def create_rest_match_filter(method_name, language_code, cluster_name):
     route_match = '''
         match:
-          prefix: "/v1/{}/hi"
+          path: "/v1/{}/hi"
         route:
           cluster: hi_cluster
           timeout: 60s
     '''.format(method_name)
     route_match = ordered_load(route_match, yaml.SafeLoader)
-    route_match["match"]["prefix"] = "/v1/{}/{}".format(method_name, language_code)
+    route_match["match"]["path"] = "/v1/{}/{}".format(method_name, language_code)
     route_match["route"]["cluster"] = cluster_name
     return route_match
 
@@ -377,7 +377,7 @@ def create_rest_match_filter(method_name, language_code, cluster_name):
 def get_grpc_match_filter(method_name, routes, language_code):
     path_to_match = "/ekstep.speech_recognition.SpeechRecognizer/{}".format(method_name)
     for route in routes:
-        if route["match"]["prefix"] == path_to_match:
+        if route["match"]["path"] == path_to_match:
             if "headers" in route["match"] and route["match"]["headers"][0]["exact_match"] == language_code:
                 return route
     return None
@@ -386,7 +386,7 @@ def get_grpc_match_filter(method_name, routes, language_code):
 def get_rest_match_filter(method_name, routes, language_code):
     path_to_match = "/v1/{}/{}".format(method_name, language_code)
     for route in routes:
-        if route["match"]["prefix"] == path_to_match:
+        if route["match"]["path"] == path_to_match:
             return route
     return None
 
