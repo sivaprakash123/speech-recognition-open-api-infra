@@ -41,17 +41,18 @@ ingress:
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
     nginx.ingress.kubernetes.io/backend-protocol: "GRPC"
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
 
   # kubernetes.io/tls-acme: "true"
   # ingress.hosts -- ingress accepted hostnames
   hosts:
-    - host: test-model-api.vakyansh.in
-      paths: ["/"]
+    - host: model-api.vakyansh.in
+      paths: ["/(.*)", "/asr/(.*)"]
   # ingress.tls -- ingress TLS configuration
   tls:
     - secretName: "asr-model-v2-envoy-secret"
       hosts:
-        - test-model-api.vakyansh.in
+        - model-api.vakyansh.in
 
 # resources -- custom resource configuration
 resources: {}

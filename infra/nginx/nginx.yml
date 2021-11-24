@@ -26,8 +26,7 @@ data:
         gzip_comp_level 6;
         gzip_buffers 16 8k;
         gzip_min_length 512;
-
-
+        
         location /asr {
             resolver 127.0.0.11;
             return 302 /asr/;
@@ -40,6 +39,15 @@ data:
             proxy_set_header Upgrade $http_upgrade;
             proxy_set_header Connection "Upgrade";
             proxy_set_header Host $host;
+        }
+
+        location /socket.io/ {
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection "upgrade";
+            proxy_http_version 1.1;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header Host $host;
+            proxy_pass http://asr-model-v2-proxy-server:9009/socket.io/;
         }
     }
 
@@ -88,16 +96,16 @@ spec:
         - mountPath: /etc/nginx/conf.d # mount nginx-conf volumn to /etc/nginx
           readOnly: true
           name: nginx-conf
-        - mountPath: "/etc/nginx/ssl"
-          name: nginx-asr-ssl
-          readOnly: true
+#        - mountPath: "/etc/nginx/ssl"
+#          name: nginx-asr-ssl
+#          readOnly: true
       #   - mountPath: /etc/ssl
       #     readOnly: true
       #     name: ssl-certificates-creds
       volumes:
-      - name: nginx-asr-ssl
-        secret:
-          secretName: nginx-asr-ssl
+#      - name: nginx-asr-ssl
+#        secret:
+#          secretName: nginx-asr-ssl
       - name: nginx-conf
         configMap:
           name: nginx-conf # place ConfigMap `nginx-conf` on /etc/nginx
