@@ -347,7 +347,7 @@ def create_rest_match_filter(method_name, language_code, cluster_name):
 def get_grpc_match_filter(method_name, routes, language_code):
     path_to_match = "/ekstep.speech_recognition.SpeechRecognizer/{}".format(method_name)
     for route in routes:
-        if route["match"]["path"] == path_to_match:
+        if "path" in route["match"] and route["match"]["path"] == path_to_match:
             if "headers" in route["match"] and route["match"]["headers"][0]["exact_match"] == language_code:
                 return route
     return None
@@ -355,7 +355,7 @@ def get_grpc_match_filter(method_name, routes, language_code):
 def get_rest_match_filter(method_name, routes, language_code):
     path_to_match = "/v1/{}/{}".format(method_name, language_code)
     for route in routes:
-        if route["match"]["path"] == path_to_match:
+        if "path" in route["match"] and route["match"]["path"] == path_to_match:
             return route
     return None
 
