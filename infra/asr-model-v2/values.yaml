@@ -93,4 +93,9 @@ affinity: {}
 
 env:
  languages : ["hi"]
- gpu : false
+ gpu : true
+
+startup:
+  initialDelaySeconds: 20
+  failureThreshold : 80
+  periodSeconds : 10
