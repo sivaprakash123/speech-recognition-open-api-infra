@@ -25,16 +25,10 @@ spec:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       volumes:
         - name: {{ .Values.volumes.name }}
-          hostPath:
-            path: {{ .Values.volumes.path }}
-            type: {{ .Values.volumes.type }}
-#          persistentVolumeClaim:
-#            claimName: {{ .Values.volumes.claimName }}
-#            readOnly: {{ .Values.volumes.readOnly }}
-#          gcePersistentDisk:
-#            pdName: {{ .Values.volumes.pdName }}
-#            fsType: {{ .Values.volumes.fsType }}
-#            readOnly: {{ .Values.volumes.readOnly }}
+          gcePersistentDisk:
+           pdName: {{ .Values.volumes.pdName }}
+           fsType: {{ .Values.volumes.fsType }}
+           readOnly: {{ .Values.volumes.readOnly }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
@@ -51,6 +45,14 @@ spec:
             - name: grpc
               containerPort: 50051
               protocol: TCP
+          startupProbe:
+            exec:
+              command:
+                - cat
+                - /opt/speech_recognition_open_api/Startup.done
+            initialDelaySeconds: {{ .Values.startup.initialDelaySeconds }}
+            failureThreshold: {{ .Values.startup.failureThreshold }}
+            periodSeconds: {{ .Values.startup.periodSeconds }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
