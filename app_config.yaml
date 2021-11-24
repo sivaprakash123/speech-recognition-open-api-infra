@@ -35,6 +35,7 @@ config:
       - or
       - sa
       - bho
+      - as
     gpu:
       count: 0
       accelerator: ''
