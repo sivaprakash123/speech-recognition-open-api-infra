@@ -28,7 +28,7 @@ config:
   - languages:
       - doi
       - raj
-      - bo
+      - bho
     cpu:
         count: 1
   - languages:
