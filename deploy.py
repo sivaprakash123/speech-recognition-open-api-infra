@@ -317,6 +317,7 @@ def update_envoy_config(config, language_config):
         verify_and_update_release_name(cluster, language_config.release_name)
     # updating match filter
     language_codes = language_config.get_language_code_as_list()
+    initial_routes_length = len(routes)
     for language_code in language_codes:
         for method_config in methods_config:
             method_name = method_config["name"]
@@ -324,13 +325,13 @@ def update_envoy_config(config, language_config):
                 grpc_match_route = get_grpc_match_filter(method_name, routes, language_code)
                 if grpc_match_route is None:
                     grpc_match_route = create_grpc_match_filter(method_name, language_code, cluster["name"])
-                    routes.insert(len(routes) - 2, grpc_match_route)
+                    routes.insert(len(routes) - initial_routes_length, grpc_match_route)
 
             if "enable_rest_match" in method_config and (method_config["enable_rest_match"] == True):
                 rest_match_route = get_rest_match_filter(method_name, routes, language_code)
                 if rest_match_route is None:
                     rest_match_route = create_rest_match_filter(method_name, language_code, cluster["name"])
-                    routes.insert(len(routes) - 2, rest_match_route)
+                    routes.insert(len(routes) - initial_routes_length, rest_match_route)
 
     return config
 
@@ -364,6 +365,9 @@ def create_rest_match_filter(method_name, language_code, cluster_name):
     route_match = '''
         match:
           path: "/v1/{}/hi"
+          headers:
+          - name: Content-Type
+            exact_match: application/json
         route:
           cluster: hi_cluster
           timeout: 60s
@@ -386,7 +390,7 @@ def get_grpc_match_filter(method_name, routes, language_code):
 def get_rest_match_filter(method_name, routes, language_code):
     path_to_match = "/v1/{}/{}".format(method_name, language_code)
     for route in routes:
-        if "path" in  route["match"] and route["match"]["path"] == path_to_match:
+        if "path" in route["match"] and route["match"]["path"] == path_to_match:
             return route
     return None
 
@@ -482,14 +486,14 @@ if __name__ == "__main__":
         elif len(languages) == 1:
             language_code = languages[0]
             language_config = LanguageConfig(language_code, release_base_name, language_helm_chart_path)
-            language_config.deploy(namespace, api_updated, gpu_count, enable_gpu, cpu_count,
-                                   image_name, image_version)
+            # language_config.deploy(namespace, api_updated, gpu_count, enable_gpu, cpu_count,
+            #                        image_name, image_version)
             envoy_config = update_envoy_config(envoy_config, language_config)
             new_releases.append(language_config.release_name)
         else:
             language_config = MultiLanguageConfig(languages, release_base_name, language_helm_chart_path)
-            language_config.deploy(namespace, api_updated, gpu_count, enable_gpu, cpu_count,
-                                   image_name, image_version)
+            # language_config.deploy(namespace, api_updated, gpu_count, enable_gpu, cpu_count,
+            #                        image_name, image_version)
             envoy_config = update_envoy_config(envoy_config, language_config)
             new_releases.append(language_config.release_name)
 
@@ -497,4 +501,4 @@ if __name__ == "__main__":
 
     write_to_yaml(envoy_config, envoy_config_path)
     EnvoyConfig(release_base_name, envoy_helm_chart_path).deploy(namespace, enable_ingress)
-    ProxyConfig(release_base_name, proxy_helm_chart_path).deploy(namespace)
+    # ProxyConfig(release_base_name, proxy_helm_chart_path).deploy(namespace)

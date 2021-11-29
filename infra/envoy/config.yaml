@@ -47,11 +47,23 @@ static_resources:
               domains: ["*"]
               routes:
                 - match:
+                    prefix: "/v1/recognize"
+                  direct_response:
+                    status: 406
+                    body:
+                      inline_string: "Given Content-type is not allowed"
+                - match:
+                    prefix: "/v1/punctuate"
+                  direct_response:
+                    status: 406
+                    body:
+                      inline_string: "Given Content-type is not allowed"
+                - match:
                     prefix: "/"
                   direct_response:
                     status: 404
                     body:
-                      inline_string: "Not Found\n"
+                      inline_string: "Not Found"
           http_filters:
           - name: envoy.filters.http.grpc_json_transcoder
             typed_config:
