@@ -247,16 +247,17 @@ def update_envoy_config(config, language_config):
         verify_and_update_release_name(cluster, language_config.release_name)
     # updating match filter
     language_codes = language_config.get_language_code_as_list()
+    initial_routes_length = len(routes)
     for language_code in language_codes:
         grpc_match_route = get_grpc_match_filter(routes, language_code)
         if grpc_match_route is None:
             grpc_match_route = create_grpc_match_filter(language_code, cluster["name"])
-            routes.insert(len(routes)-2, grpc_match_route)
+            routes.insert(len(routes) - initial_routes_length, grpc_match_route)
 
         rest_match_route = get_rest_match_filter(routes, language_code)
         if rest_match_route is None:
             rest_match_route = create_rest_match_filter(language_code, cluster["name"])
-            routes.insert(len(routes)-2, rest_match_route)
+            routes.insert(len(routes) - initial_routes_length, rest_match_route)
     
     return config
 
@@ -285,6 +286,9 @@ def create_rest_match_filter(language_code, cluster_name):
     route_match = '''
         match:
           prefix: "/v1/recognize/hi"
+          headers:
+          - name: Content-Type
+            exact_match: application/json
         route: {cluster: hi_cluster, timeout: 60s}
     '''
     route_match = ordered_load(route_match, yaml.SafeLoader)
