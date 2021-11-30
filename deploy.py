@@ -486,14 +486,14 @@ if __name__ == "__main__":
         elif len(languages) == 1:
             language_code = languages[0]
             language_config = LanguageConfig(language_code, release_base_name, language_helm_chart_path)
-            # language_config.deploy(namespace, api_updated, gpu_count, enable_gpu, cpu_count,
-            #                        image_name, image_version)
+            language_config.deploy(namespace, api_updated, gpu_count, enable_gpu, cpu_count,
+                                   image_name, image_version)
             envoy_config = update_envoy_config(envoy_config, language_config)
             new_releases.append(language_config.release_name)
         else:
             language_config = MultiLanguageConfig(languages, release_base_name, language_helm_chart_path)
-            # language_config.deploy(namespace, api_updated, gpu_count, enable_gpu, cpu_count,
-            #                        image_name, image_version)
+            language_config.deploy(namespace, api_updated, gpu_count, enable_gpu, cpu_count,
+                                   image_name, image_version)
             envoy_config = update_envoy_config(envoy_config, language_config)
             new_releases.append(language_config.release_name)
 
@@ -501,4 +501,4 @@ if __name__ == "__main__":
 
     write_to_yaml(envoy_config, envoy_config_path)
     EnvoyConfig(release_base_name, envoy_helm_chart_path).deploy(namespace, enable_ingress)
-    # ProxyConfig(release_base_name, proxy_helm_chart_path).deploy(namespace)
+    ProxyConfig(release_base_name, proxy_helm_chart_path).deploy(namespace)

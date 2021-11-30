@@ -24,7 +24,7 @@ pipeline {
                                 name: 'IMAGE_NAME'
                             ),
                             string(
-                                defaultValue: '3.0.1',
+                                defaultValue: '3.0.4',
                                 name: 'IMAGE_VERSION'
                             )
                         ])
