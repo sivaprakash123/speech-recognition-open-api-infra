@@ -17,7 +17,7 @@ fullnameOverride: ""
 volumes:
   name: modelsvolume
   pdName: modelsv2
-  readOnly: true
+  readOnly: false
   fsType: ext4
   mountPath: /opt/speech_recognition_open_api/deployed_models/
   # claimName: exascaler-csi-file-driver-pvc-persistent2
