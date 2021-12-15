@@ -29,9 +29,9 @@ spec:
             path: {{ .Values.volumes.path }}
             type: {{ .Values.volumes.type }}
       topologySpreadConstraints:
-        - maxSkew: 1
+        - maxSkew: 4
           topologyKey: node
-          whenUnsatisfiable: DoNotSchedule
+          whenUnsatisfiable: ScheduleAnyway
           labelSelector:
             matchLabels:
               app: {{ include "asr-model-v2.fullname" . }}
