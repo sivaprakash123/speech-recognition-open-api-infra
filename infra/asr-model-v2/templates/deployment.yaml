@@ -30,7 +30,7 @@ spec:
             type: {{ .Values.volumes.type }}
       topologySpreadConstraints:
         - maxSkew: 1
-          topologyKey: kubernetes.io/hostname
+          topologyKey: node
           whenUnsatisfiable: DoNotSchedule
           labelSelector:
             matchLabels:
