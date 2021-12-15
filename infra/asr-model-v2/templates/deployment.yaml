@@ -29,8 +29,8 @@ spec:
             path: {{ .Values.volumes.path }}
             type: {{ .Values.volumes.type }}
       topologySpreadConstraints:
-        - maxSkew: 2
-          topologyKey: "kubernetes.io/hostname"
+        - maxSkew: 1
+          topologyKey: node
           whenUnsatisfiable: DoNotSchedule
           labelSelector:
             matchLabels:
