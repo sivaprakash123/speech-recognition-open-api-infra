@@ -40,6 +40,6 @@ config:
       - bn
       - ne
       - doi
-      gpu:
-        count: 0
-        accelerator: ''
+    gpu:
+      count: 0
+      accelerator: ''
