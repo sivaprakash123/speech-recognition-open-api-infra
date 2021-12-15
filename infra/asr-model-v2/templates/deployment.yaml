@@ -28,6 +28,13 @@ spec:
           hostPath:
             path: {{ .Values.volumes.path }}
             type: {{ .Values.volumes.type }}
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              app: {{ include "asr-model-v2.fullname" . }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
