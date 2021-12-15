@@ -29,7 +29,7 @@ spec:
             path: {{ .Values.volumes.path }}
             type: {{ .Values.volumes.type }}
       topologySpreadConstraints:
-        - maxSkew: 4
+        - maxSkew: 2
           topologyKey: node
           whenUnsatisfiable: ScheduleAnyway
           labelSelector:
