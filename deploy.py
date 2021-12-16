@@ -76,7 +76,7 @@ class LanguageConfig:
 
         pull_policy = "Always" if api_changed == True else "IfNotPresent"
 
-        set_gpu_command = "--set resources.requests.\"nvidia\.com/gpu\"='{}' --set env.gpu='{}'".format(
+        set_gpu_command = "--set resources.limits.\"nvidia\.com/gpu\"='{}' --set env.gpu='{}'".format(
             gpu_count, enable_gpu)
         set_cpu_command = "--set resources.requests.cpu='{}' --set env.gpu='{}'".format(cpu_count, False)
 
@@ -131,7 +131,7 @@ class MultiLanguageConfig:
 
         pull_policy = "Always" if api_changed == True else "IfNotPresent"
 
-        set_gpu_command = "--set resources.requests.\"nvidia\.com/gpu\"='{}' --set env.gpu='{}'".format(
+        set_gpu_command = "--set resources.limits.\"nvidia\.com/gpu\"='{}' --set env.gpu='{}'".format(
             gpu_count, enable_gpu)
         set_cpu_command = "--set resources.requests.cpu='{}' --set env.gpu='{}'".format(cpu_count, False)
 
