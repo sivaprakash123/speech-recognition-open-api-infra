@@ -8,7 +8,7 @@ config:
       - mr
       - mai
     gpu:
-      count: 1
+      count: 0
       accelerator: ''
   - languages:
       - gu
@@ -19,7 +19,7 @@ config:
       - te
       - bn
     gpu:
-      count: 1
+      count: 0
       accelerator: ''
   - languages:
       - ur
@@ -29,5 +29,5 @@ config:
       - sa
       - bo
     gpu:
-      count: 1
+      count: 0
       accelerator: ''
