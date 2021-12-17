@@ -17,7 +17,6 @@ config:
       - pa
       - raj
       - te
-      - bn
     gpu:
       count: 0
       accelerator: ''
@@ -28,6 +27,11 @@ config:
       - or
       - sa
       - bo
+    gpu:
+      count: 0
+      accelerator: ''
+  - languages:
+      - bn
     gpu:
       count: 0
       accelerator: ''
