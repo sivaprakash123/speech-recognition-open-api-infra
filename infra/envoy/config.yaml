@@ -66,6 +66,13 @@ static_resources:
                       inline_string: "Not Found\n"
                 - match:
                     prefix: "/"
+                    headers:
+                      - name: ":method"
+                        exact_match: OPTIONS
+                    direct_response:
+                      status: 200
+                - match:
+                    prefix: "/"
                   direct_response:
                     status: 404
                     body:
