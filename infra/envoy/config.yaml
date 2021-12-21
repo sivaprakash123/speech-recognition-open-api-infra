@@ -63,8 +63,8 @@ static_resources:
                     headers:
                       - name: ":method"
                         exact_match: OPTIONS
-                    direct_response:
-                      status: 200
+                  direct_response:
+                    status: 200
                 - match:
                     prefix: "/"
                   direct_response:
