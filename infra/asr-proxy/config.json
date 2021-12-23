@@ -1,0 +1,27 @@
+{
+  "asr-model-v2-envoy:80": {
+    "languages": [
+      "ta",
+      "bho",
+      "bn",
+      "en_bio",
+      "ne",
+      "kn",
+      "raj",
+      "ml",
+      "or",
+      "sa",
+      "mai",
+      "ur",
+      "as",
+      "doi",
+      "gu",
+      "te",
+      "mr",
+      "pa",
+      "hi",
+      "en"
+    ],
+    "maxConnectionCount": 10000
+  }
+}
