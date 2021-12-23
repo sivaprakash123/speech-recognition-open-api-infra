@@ -31,7 +31,7 @@ config:
       - ml
       - or
       - sa
-      - bo
+      - bho
     gpu:
       count: 0
       accelerator: 'Tesla-T4'
