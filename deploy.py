@@ -61,8 +61,7 @@ class LanguageConfig:
     def get_language_code_as_list(self):
         return [self.language_code]
 
-    def deploy(self, namespace, api_changed, gpu_count, enable_gpu, cpu_count, image_name,
-               image_version):
+    def deploy(self, namespace, api_changed, gpu_count, enable_gpu, node_selector_accelerator, cpu_count, image_name, image_version):
         is_deployed = self.is_deployed(namespace)
         print("IS_DEPLOYED", is_deployed)
         if is_deployed == True:
@@ -76,8 +75,7 @@ class LanguageConfig:
 
         pull_policy = "Always" if api_changed == True else "IfNotPresent"
 
-        set_gpu_command = "--set resources.limits.\"nvidia\.com/gpu\"='{}' --set env.gpu='{}'".format(
-            gpu_count, enable_gpu)
+        set_gpu_command = "--set resources.limits.\"nvidia\.com/gpu\"='{}' --set env.gpu='{}' --set nodeSelector.accelerator='{}'".format(gpu_count, enable_gpu, node_selector_accelerator)
         set_cpu_command = "--set resources.requests.cpu='{}' --set env.gpu='{}'".format(cpu_count, False)
 
         command = "helm {0} --timeout 180s {1} {2} --namespace {3} --set env.languages='[\"{4}\"]' --set image.pullPolicy='{5}' --set image.repository='{6}' --set image.tag='{7}'".format(
@@ -113,8 +111,7 @@ class MultiLanguageConfig:
     def get_language_code_as_list(self):
         return self.language_code_list
 
-    def deploy(self, namespace, api_changed, gpu_count, enable_gpu, cpu_count, image_name,
-               image_version):
+    def deploy(self, namespace, api_changed, gpu_count, enable_gpu, node_selector_accelerator, cpu_count, image_name, image_version):
         if len(self.language_code_list) == 0:
             raise ValueError("No Language codes present.Please add language codes or remove the item from list")
             return
@@ -131,8 +128,7 @@ class MultiLanguageConfig:
 
         pull_policy = "Always" if api_changed == True else "IfNotPresent"
 
-        set_gpu_command = "--set resources.limits.\"nvidia\.com/gpu\"='{}' --set env.gpu='{}'".format(
-            gpu_count, enable_gpu)
+        set_gpu_command = "--set resources.limits.\"nvidia\.com/gpu\"='{}' --set env.gpu='{}' --set nodeSelector.accelerator='{}'".format(gpu_count, enable_gpu, node_selector_accelerator)
         set_cpu_command = "--set resources.requests.cpu='{}' --set env.gpu='{}'".format(cpu_count, False)
 
         languages = ["\"{}\"".format(x) for x in self.language_code_list]
@@ -472,12 +468,14 @@ if __name__ == "__main__":
         gpu_count = 0
         cpu_count = 0
         enable_gpu = False
+        node_selector_accelerator = ""
         languages = []
         if "languages" in item:
             languages = item["languages"]
         if "gpu" in item:
             gpu_count = item["gpu"]["count"]
             enable_gpu = True
+            node_selector_accelerator = item["gpu"]["accelerator"]
         if "cpu" in item:
             cpu_count = item["cpu"]["count"]
 
@@ -486,14 +484,12 @@ if __name__ == "__main__":
         elif len(languages) == 1:
             language_code = languages[0]
             language_config = LanguageConfig(language_code, release_base_name, language_helm_chart_path)
-            language_config.deploy(namespace, api_updated, gpu_count, enable_gpu, cpu_count,
-                                   image_name, image_version)
+            language_config.deploy(namespace, api_updated, gpu_count, enable_gpu, node_selector_accelerator, cpu_count, image_name, image_version)
             envoy_config = update_envoy_config(envoy_config, language_config)
             new_releases.append(language_config.release_name)
         else:
             language_config = MultiLanguageConfig(languages, release_base_name, language_helm_chart_path)
-            language_config.deploy(namespace, api_updated, gpu_count, enable_gpu, cpu_count,
-                                   image_name, image_version)
+            language_config.deploy(namespace, api_updated, gpu_count, enable_gpu, node_selector_accelerator, cpu_count, image_name, image_version)
             envoy_config = update_envoy_config(envoy_config, language_config)
             new_releases.append(language_config.release_name)
 
