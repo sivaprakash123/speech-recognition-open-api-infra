@@ -38,20 +38,21 @@ static_resources:
             name: local_route
             virtual_hosts:
             - name: local_service
+              cors:
+                allow_origin_string_match:
+                - prefix: "*"
+                allow_methods: "POST,  OPTIONS"
+                allow_headers: "authorization, keep-alive, user-agent, cache-control, content-type, content-transfer-encoding, x-accept-content-transfer-encoding, x-accept-response-streaming, x-user-agent, x-grpc-web, referer,,language"
+                expose_headers: "grpc-status, grpc-message, x-envoy-upstream-service-time"
               domains: ["*"]
               routes:
                 - match:
-                    prefix: "/ekstep.speech_recognition.SpeechRecognizer/recognize"
+                    prefix: "/"
+                    headers:
+                      - name: ":method"
+                        exact_match: OPTIONS
                   direct_response:
-                    status: 404
-                    body:
-                      inline_string: "Not Found"
-                - match:
-                    prefix: "/ekstep.speech_recognition.SpeechRecognizer/punctuate"
-                  direct_response:
-                    status: 404
-                    body:
-                      inline_string: "Not Found"
+                    status: 200
                 - match:
                     prefix: "/v1/recognize"
                   direct_response:
