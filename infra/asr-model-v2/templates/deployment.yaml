@@ -28,13 +28,24 @@ spec:
           hostPath:
             path: {{ .Values.volumes.path }}
             type: {{ .Values.volumes.type }}
-      topologySpreadConstraints:
-        - maxSkew: 1
-          topologyKey: "kubernetes.io/hostname"
-          whenUnsatisfiable: DoNotSchedule
-          labelSelector:
-            matchLabels:
-              app: {{ include "asr-model-v2.fullname" . }}
+      # topologySpreadConstraints:
+      #   - maxSkew: 1
+      #     topologyKey: "kubernetes.io/hostname"
+      #     whenUnsatisfiable: DoNotSchedule
+          # labelSelector:
+          #   matchLabels:
+              # app: {{ include "asr-model-v2.fullname" . }}
+
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - {{ include "asr-model-v2.fullname" . }}
+            topologyKey: "kubernetes.io/hostname"
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
@@ -68,11 +79,11 @@ spec:
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.affinity }}
-      affinity:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.tolerations }}
-      tolerations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+      # {{- with .Values.affinity }}
+      # affinity:
+      #   {{- toYaml . | nindent 8 }}
+      # {{- end }}
+      # {{- with .Values.tolerations }}
+      # tolerations:
+      #   {{- toYaml . | nindent 8 }}
+      # {{- end }}
