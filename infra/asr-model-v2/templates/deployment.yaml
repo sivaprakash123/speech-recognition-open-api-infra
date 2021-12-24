@@ -32,20 +32,20 @@ spec:
       #   - maxSkew: 1
       #     topologyKey: "kubernetes.io/hostname"
       #     whenUnsatisfiable: DoNotSchedule
-          # labelSelector:
-          #   matchLabels:
-              # app: {{ include "asr-model-v2.fullname" . }}
+      #     labelSelector:
+      #       matchLabels:
+      #         app: {{ include "asr-model-v2.fullname" . }}
 
-      affinity:
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-          - labelSelector:
-              matchExpressions:
-              - key: app
-                operator: In
-                values:
-                - {{ include "asr-model-v2.fullname" . }}
-            topologyKey: "kubernetes.io/hostname"
+      # affinity:
+      #   podAntiAffinity:
+      #     requiredDuringSchedulingIgnoredDuringExecution:
+      #     - labelSelector:
+      #         matchExpressions:
+      #         - key: app
+      #           operator: In
+      #           values:
+      #           - {{ include "asr-model-v2.fullname" . }}
+      #       topologyKey: "kubernetes.io/hostname"
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
