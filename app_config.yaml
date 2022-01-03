@@ -8,28 +8,28 @@ config:
       - mr
       - mai
     gpu:
-      count: 0
+      count: 1
       accelerator: ''
-  - languages:
-      - gu
-      - kn
-      - ta
-      - pa
-      - raj
-      - te
-    gpu:
-      count: 0
-      accelerator: ''
-  - languages:
-      - ur
-      - hi
-      - ml
-      - or
-      - sa
-      - bho
-    gpu:
-      count: 0
-      accelerator: ''
+  # - languages:
+  #     - gu
+  #     - kn
+  #     - ta
+  #     - pa
+  #     - raj
+  #     - te
+  #   gpu:
+  #     count: 0
+  #     accelerator: ''
+  # - languages:
+  #     - ur
+  #     - hi
+  #     - ml
+  #     - or
+  #     - sa
+  #     - bho
+  #   gpu:
+  #     count: 0
+  #     accelerator: ''
   # - languages:
   #     - bn
   #   gpu:

@@ -86,7 +86,7 @@ autoscaling:
   # targetMemoryUtilizationPercentage: 80
 
 nodeSelector:
-  name: workload
+  node: node39
 
 tolerations: []
 
