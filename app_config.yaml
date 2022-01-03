@@ -8,7 +8,7 @@ config:
       - mr
       - mai
     gpu:
-      count: 1
+      count: 0
       accelerator: ''
   # - languages:
   #     - gu
