@@ -67,10 +67,10 @@ spec:
 
           resources:
             request:
-              cpu: 10000m
+              cpu: 12000m
               memory: 5Gi
             limit:
-              cpu: 11000m
+              cpu: 13000m
 
           startupProbe:
             exec:
