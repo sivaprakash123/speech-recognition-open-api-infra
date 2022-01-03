@@ -4,6 +4,7 @@ metadata:
   name: {{ include "asr-model-v2.fullname" . }}
   labels:
     {{- include "asr-model-v2.labels" . | nindent 4 }}
+    lab: asr-model
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
@@ -11,10 +12,12 @@ spec:
   selector:
     matchLabels:
       {{- include "asr-model-v2.selectorLabels" . | nindent 6 }}
+      lab: asr-model
   template:
     metadata:
       labels:
         {{- include "asr-model-v2.selectorLabels" . | nindent 8 }}
+        lab: asr-model
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
@@ -30,11 +33,12 @@ spec:
             type: {{ .Values.volumes.type }}
       topologySpreadConstraints:
         - maxSkew: 1
-          topologyKey: name
+          topologyKey: node
           whenUnsatisfiable: DoNotSchedule
           labelSelector:
             matchLabels:
-              name: workload
+              lab: asr-model
+    
 
       # affinity:
       #   podAntiAffinity:
