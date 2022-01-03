@@ -30,8 +30,8 @@ config:
     gpu:
       count: 1
       accelerator: ''
-  - languages:
-      - bn
-    gpu:
-      count: 0
-      accelerator: ''
+  # - languages:
+  #     - bn
+  #   gpu:
+  #     count: 0
+  #     accelerator: ''
