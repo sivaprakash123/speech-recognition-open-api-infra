@@ -30,7 +30,7 @@ spec:
             type: {{ .Values.volumes.type }}
       topologySpreadConstraints:
         - maxSkew: 1
-          topologyKey: node
+          topologyKey: name
           whenUnsatisfiable: DoNotSchedule
           labelSelector:
             matchLabels:
