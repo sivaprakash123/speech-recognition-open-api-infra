@@ -28,13 +28,13 @@ spec:
           hostPath:
             path: {{ .Values.volumes.path }}
             type: {{ .Values.volumes.type }}
-      topologySpreadConstraints:
-        - maxSkew: 1
-          topologyKey: node
-          whenUnsatisfiable: DoNotSchedule
-          labelSelector:
-            matchLabels:
-              app: {{ include "asr-model-v2.fullname" . }}
+      # topologySpreadConstraints:
+      #   - maxSkew: 1
+      #     topologyKey: node
+      #     whenUnsatisfiable: DoNotSchedule
+      #     labelSelector:
+      #       matchLabels:
+      #         app: {{ include "asr-model-v2.fullname" . }}
 
       # affinity:
       #   podAntiAffinity:
