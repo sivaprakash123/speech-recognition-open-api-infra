@@ -43,7 +43,7 @@ def cmd_runner(command, caller):
 class LanguageConfig:
 
     def __init__(self, language_code, base_name, helm_chart_path):
-        self.language_code = language_code
+        self.language_code = language_code.replace('_', '-')
         self.helm_chart_path = helm_chart_path
         self.release_name = "{}-{}".format(base_name, language_code)
         print("Release name", self.release_name)
@@ -94,7 +94,7 @@ class LanguageConfig:
 class MultiLanguageConfig:
 
     def __init__(self, language_code_list, base_name, helm_chart_path):
-        self.language_code_list = language_code_list
+        self.language_code_list = language_code_list.replace('_', '-')
         self.helm_chart_path = helm_chart_path
         self.languages_codes_string = "-".join(language_code_list)
         self.release_name = "{}-{}".format(base_name, self.languages_codes_string)
