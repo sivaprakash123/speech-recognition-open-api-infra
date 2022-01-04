@@ -96,7 +96,7 @@ class LanguageConfig:
 class MultiLanguageConfig:
 
     def __init__(self, language_code_list, base_name, helm_chart_path):
-        self.language_code_list = language_code_list.replace('_', '-')
+        self.language_code_list = language_code_list
         self.helm_chart_path = helm_chart_path
         self.languages_codes_string = "-".join(language_code_list)
         self.release_name = "{}-{}".format(base_name, self.languages_codes_string)
