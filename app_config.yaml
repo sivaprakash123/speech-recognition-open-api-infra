@@ -32,6 +32,7 @@ config:
       accelerator: ''
   - languages:
       - bn
+      - en_bio
     gpu:
       count: 0
       accelerator: ''
