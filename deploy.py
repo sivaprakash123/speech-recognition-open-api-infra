@@ -45,7 +45,7 @@ class LanguageConfig:
     def __init__(self, language_code, base_name, helm_chart_path):
         self.language_code = language_code
         self.helm_chart_path = helm_chart_path
-        self.release_name = "{}-{}".format(base_name, language_code)
+        self.release_name = "{}-{}".format(base_name, language_code).replace('_', '-')
         print("Release name", self.release_name)
 
     def is_deployed(self, namespace):
@@ -68,7 +68,7 @@ class LanguageConfig:
         if is_deployed == True:
             process = "upgrade"
             if api_changed == True:
-                uninstall_command = "helm uninstall {0} --namespace {1}".format(self.release_name.replace('_', '-'),
+                uninstall_command = "helm uninstall {0} --namespace {1}".format(self.release_name,
                                                                                 namespace)
                 cmd_runner(uninstall_command, "LANGUAGE :" + self.language_code)
                 process = "install"
@@ -82,7 +82,7 @@ class LanguageConfig:
         set_cpu_command = "--set resources.requests.cpu='{}' --set env.gpu='{}'".format(cpu_count, False)
 
         command = "helm {0} --timeout 180s {1} {2} --namespace {3} --set env.languages='[\"{4}\"]' --set image.pullPolicy='{5}' --set image.repository='{6}' --set image.tag='{7}'".format(
-            process, self.release_name.replace('_', '-'), self.helm_chart_path, namespace, self.language_code,
+            process, self.release_name, self.helm_chart_path, namespace, self.language_code,
             pull_policy, image_name,
             image_version)
         if enable_gpu == True:
@@ -99,11 +99,11 @@ class MultiLanguageConfig:
         self.language_code_list = language_code_list
         self.helm_chart_path = helm_chart_path
         self.languages_codes_string = "-".join(language_code_list)
-        self.release_name = "{}-{}".format(base_name, self.languages_codes_string)
+        self.release_name = "{}-{}".format(base_name, self.languages_codes_string).replace('_', '-')
         print("Release name", self.release_name)
 
     def is_deployed(self, namespace):
-        result = subprocess.getoutput('helm status {} -n {} --output yaml'.format(self.release_name.replace('_', '-'), namespace))
+        result = subprocess.getoutput('helm status {} -n {} --output yaml'.format(self.release_name, namespace))
         if "release: not found" in result.lower():
             return False
         else:
@@ -125,7 +125,7 @@ class MultiLanguageConfig:
         if is_deployed == True:
             process = "upgrade"
             if api_changed == True:
-                uninstall_command = "helm uninstall {0} --namespace {1}".format(self.release_name.replace('_', '-'), namespace)
+                uninstall_command = "helm uninstall {0} --namespace {1}".format(self.release_name, namespace)
                 cmd_runner(uninstall_command, "LANGUAGE :" + ",".join(self.language_code_list))
                 process = "install"
         else:
@@ -140,7 +140,7 @@ class MultiLanguageConfig:
         languages = ["\"{}\"".format(x) for x in self.language_code_list]
         languages = "\,".join(languages)
         command = "helm {0} --timeout 180s {1} {2} --namespace {3} --set env.languages='[{4}]' --set image.pullPolicy='{5}' --set image.repository='{6}' --set image.tag='{7}'".format(
-            process, self.release_name.replace('_', '-'), self.helm_chart_path, namespace, languages, pull_policy, image_name,
+            process, self.release_name, self.helm_chart_path, namespace, languages, pull_policy, image_name,
             image_version)
         if enable_gpu == True:
             command = "{} {}".format(command, set_gpu_command)
@@ -158,7 +158,7 @@ class EnvoyConfig:
         self.release_name = "{}-{}".format(base_name, self.name)
 
     def is_deployed(self, namespace):
-        result = subprocess.getoutput('helm status {} -n {} --output yaml'.format(self.release_name.replace('_', '-'), namespace))
+        result = subprocess.getoutput('helm status {} -n {} --output yaml'.format(self.release_name, namespace))
         if "release: not found" in result.lower():
             return False
         else:
@@ -172,7 +172,7 @@ class EnvoyConfig:
             process = "upgrade"
 
         command = "helm {0} --timeout 180s {1} {2} --namespace {3} --set ingress.enabled='{4}'".format(process,
-                                                                                                       self.release_name.replace('_', '-'),
+                                                                                                       self.release_name,
                                                                                                        self.helm_chart_path,
                                                                                                        namespace,
                                                                                                        enable_ingress)
@@ -187,7 +187,7 @@ class ProxyConfig:
         self.release_name = "{}-{}".format(base_name, self.name)
 
     def is_deployed(self, namespace):
-        result = subprocess.getoutput('helm status {} -n {} --output yaml'.format(self.release_name.replace('_', '-'), namespace))
+        result = subprocess.getoutput('helm status {} -n {} --output yaml'.format(self.release_name, namespace))
         if "release: not found" in result.lower():
             return False
         else:
@@ -201,7 +201,7 @@ class ProxyConfig:
             process = "upgrade"
 
         command = "helm {0} --timeout 180s {1} {2} --namespace {3} ".format(process,
-                                                                            self.release_name.replace('_', '-'),
+                                                                            self.release_name,
                                                                             self.helm_chart_path,
                                                                             namespace
                                                                             )
