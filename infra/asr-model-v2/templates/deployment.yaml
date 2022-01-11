@@ -66,14 +66,6 @@ spec:
             - name: grpc
               containerPort: 50051
               protocol: TCP
-
-          resources:
-            request:
-              cpu: 5000m
-              memory: 3Gi
-            limit:
-              cpu: 8000m
-
           startupProbe:
             exec:
               command:
