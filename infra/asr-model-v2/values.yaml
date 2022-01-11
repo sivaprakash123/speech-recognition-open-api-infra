@@ -77,10 +77,10 @@ resources:
   # requests:
   #    cpu: "3"
   #    memory: 5Gi
-  request:
+  requests:
     cpu: 1000m
     memory: 3Gi
-  limit:
+  limits:
     cpu: 4000m
 
 autoscaling:
