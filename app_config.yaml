@@ -2,18 +2,10 @@ base_name: asr-model-v2
 config:
   - languages:
       - en
-      - hi
-      - bn
-      - as
-    gpu:
-      count: 0
-      accelerator: 'Tesla-T4'
-  - languages:
-      - mr
-      - mai
-      - te
       - ne
       - doi
+      - as
+      - mr
     gpu:
       count: 0
       accelerator: 'Tesla-T4'
@@ -23,15 +15,23 @@ config:
       - ta
       - pa
       - raj
+      - te
     gpu:
       count: 0
       accelerator: 'Tesla-T4'
   - languages:
       - ur
+      - hi
       - ml
       - or
-      - sa
       - bho
+    gpu:
+      count: 0
+      accelerator: 'Tesla-T4'
+  - languages:
+      - bn
+      - sa
+      - mai
     gpu:
       count: 0
       accelerator: 'Tesla-T4'
