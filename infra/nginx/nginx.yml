@@ -26,8 +26,8 @@ data:
         gzip_comp_level 6;
         gzip_buffers 16 8k;
         gzip_min_length 512;
-        add_header Access-Control-Allow-Origin *;
-        add_header Access-Control-Allow-Headers *;
+        add_header Access-Control-Allow-Origin * always;
+        add_header Access-Control-Allow-Headers * always;
 
         location /asr {
             resolver 127.0.0.11;
