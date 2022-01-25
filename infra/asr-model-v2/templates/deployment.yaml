@@ -46,6 +46,10 @@ spec:
               value: {{ .Values.env.languages | squote }}
             - name: gpu
               value: {{ .Values.env.gpu | quote }}
+            - name: log_level
+              value: {{ .Values.env.log_level | quote }}
+            - name: max_workers
+              value: {{ .Values.env.max_workers | quote }}
 
           ports:
             - name: grpc

@@ -93,4 +93,6 @@ affinity: {}
 
 env:
  languages : ["hi"]
- gpu : false
+ gpu: true
+ log_level: "INFO"
+ max_workers: 10
