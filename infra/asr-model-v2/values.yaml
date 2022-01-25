@@ -98,7 +98,7 @@ env:
  languages : ["hi"]
  gpu : true
  log_level : "INFO"
- max_workers : 20
+ max_workers : 30
 
 startup:
   initialDelaySeconds: 20
