@@ -97,8 +97,8 @@ affinity: {}
 env:
  languages : ["hi"]
  gpu : true
- log_level : "WARNING"
- max_workers : 10
+ log_level : "WARN"
+ max_workers : 30
 
 startup:
   initialDelaySeconds: 20
