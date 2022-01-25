@@ -97,7 +97,7 @@ affinity: {}
 env:
  languages : ["hi"]
  gpu : true
- log_level: "WARN"
+ log_level : "INFO"
 
 startup:
   initialDelaySeconds: 20
