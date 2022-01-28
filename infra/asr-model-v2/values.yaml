@@ -50,7 +50,6 @@ securityContext: {}
   # runAsUser: 1000
 
 service:
-  type: None
   port: 50051
 
 ingress:
