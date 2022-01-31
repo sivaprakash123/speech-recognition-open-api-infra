@@ -2,7 +2,7 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-replicaCount: 2
+replicaCount: 1
 
 image:
   repository: gcr.io/ekstepspeechrecognition/speech_recognition_model_api
@@ -97,7 +97,7 @@ affinity: {}
 env:
  languages : ["hi"]
  gpu : true
- log_level : "INFO"
+ log_level : "DEBUG"
  max_workers : 10
 
 startup:
