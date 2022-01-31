@@ -15,7 +15,6 @@ config:
       - kn
       - ta
       - pa
-      - raj
       - te
     gpu:
       count: 0
