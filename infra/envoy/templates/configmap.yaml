@@ -7,4 +7,3 @@ metadata:
     {{- include "envoy.labels" . | nindent 4 }}
 data:
   envoy.yaml: |- {{ .Files.Get "config.yaml" | nindent 4 }}
-  api_descriptor.pb: |- {{ .Files.Get "api_descriptor.pb" | nindent 4 }}
