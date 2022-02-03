@@ -2,6 +2,37 @@ base_name: asr-model-v2
 config:
   - languages:
       - en
+      - ne
+      - doi
+      - as
+      - mr
+      - mai
+    gpu:
+      count: 0
+      accelerator: ''
+  - languages:
+      - gu
+      - kn
+      - ta
+      - pa
+      - te
+    gpu:
+      count: 0
+      accelerator: ''
+  - languages:
+      - ur
+      - hi
+      - ml
+      - or
+      - sa
+      - bho
+    gpu:
+      count: 0
+      accelerator: ''
+  - languages:
+      - bn
+      - en_bio
+      - hi_en
     gpu:
       count: 0
       accelerator: ''
