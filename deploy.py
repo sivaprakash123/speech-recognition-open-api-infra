@@ -263,7 +263,7 @@ def create_cluster(language_code, release_name):
         name: hi_cluster
         type: STRICT_DNS
         lb_policy: ROUND_ROBIN
-        connect_timeout: 30s
+        connect_timeout: 120s
         dns_lookup_family: V4_ONLY
         typed_extension_protocol_options:
           envoy.extensions.upstreams.http.v3.HttpProtocolOptions:
