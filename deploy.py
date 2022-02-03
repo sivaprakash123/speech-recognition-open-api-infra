@@ -372,7 +372,7 @@ def create_rest_match_filter(method_name, language_code, cluster_name):
             exact_match: application/json
         route:
           cluster: hi_cluster
-          timeout: 60s
+          timeout: 120s
     '''.format(method_name)
     route_match = ordered_load(route_match, yaml.SafeLoader)
     route_match["match"]["path"] = "/v1/{}/{}".format(method_name, language_code)
