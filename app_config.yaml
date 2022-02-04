@@ -36,3 +36,88 @@ config:
     gpu:
       count: 0
       accelerator: ''
+  - languages:
+      - ne
+    gpu:
+      count: 0
+      accelerator: ''
+  - languages:
+      - doi
+    gpu:
+      count: 0
+      accelerator: ''
+  - languages:
+      - as
+    gpu:
+      count: 0
+      accelerator: ''
+  - languages:
+      - mr
+    gpu:
+      count: 0
+      accelerator: ''
+  - languages:
+      - mai
+    gpu:
+      count: 0
+      accelerator: ''
+  - languages:
+      - gu
+    gpu:
+      count: 0
+      accelerator: ''
+  - languages:
+      - kn
+    gpu:
+      count: 0
+      accelerator: ''
+  - languages:
+      - ta
+    gpu:
+      count: 0
+      accelerator: ''
+  - languages:
+      - pa
+    gpu:
+      count: 0
+      accelerator: ''
+  - languages:
+      - te
+    gpu:
+      count: 0
+      accelerator: ''
+  - languages:
+      - ur
+    gpu:
+      count: 0
+      accelerator: ''
+  - languages:
+      - hi
+    gpu:
+      count: 0
+      accelerator: ''
+  - languages:
+      - ml
+    gpu:
+      count: 0
+      accelerator: ''
+  - languages:
+      - or
+    gpu:
+      count: 0
+      accelerator: ''
+  - languages:
+      - sa
+    gpu:
+      count: 0
+      accelerator: ''
+  - languages:
+      - bho
+    gpu:
+      count: 0
+      accelerator: ''
+  - languages:
+      - bn
+    gpu:
+      count: 0
+      accelerator: ''
