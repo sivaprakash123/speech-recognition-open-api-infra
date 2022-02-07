@@ -25,14 +25,14 @@ config:
       - ml
       - or
       - sa
-      - bho
+      - en_bio
+      - hi_en
     gpu:
       count: 0
       accelerator: ''
   - languages:
       - bn
-      - en_bio
-      - hi_en
+      - bho
     gpu:
       count: 0
       accelerator: ''
