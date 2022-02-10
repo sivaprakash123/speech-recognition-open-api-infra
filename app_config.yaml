@@ -7,8 +7,15 @@ config:
       - as
       - mr
       - mai
+    gpu:
+      count: 0
+      accelerator: ''
+  - languages:
       - gu
       - kn
+      - ta
+      - pa
+      - te
     gpu:
       count: 0
       accelerator: ''
@@ -18,11 +25,14 @@ config:
       - ml
       - or
       - sa
-      - bn
+      - en_bio
+      - hi_en
+    gpu:
+      count: 0
+      accelerator: ''
+  - languages:
       - bho
-      - pa
-      - te
-      - ta
+      - bn
     gpu:
       count: 0
       accelerator: ''
