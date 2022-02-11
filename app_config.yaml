@@ -8,7 +8,7 @@ config:
       - mr
     gpu:
       count: 0
-      accelerator: 'Tesla-T4'
+      accelerator: 'nvidia-A100'
   - languages:
       - gu
       - kn
@@ -18,7 +18,7 @@ config:
       - te
     gpu:
       count: 0
-      accelerator: 'Tesla-T4'
+      accelerator: 'nvidia-A100'
   - languages:
       - ur
       - hi
@@ -27,11 +27,11 @@ config:
       - bho
     gpu:
       count: 0
-      accelerator: 'Tesla-T4'
+      accelerator: 'nvidia-A100'
   - languages:
       - bn
       - sa
       - mai
     gpu:
       count: 0
-      accelerator: 'Tesla-T4'
+      accelerator: 'nvidia-A100'
