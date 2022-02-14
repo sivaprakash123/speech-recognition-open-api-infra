@@ -2,36 +2,59 @@ base_name: asr-model-v2
 config:
   - languages:
       - en
+    gpu:
+      count: 0
+      accelerator: 'nvidia-A100'
+  - languages:
       - ne
       - doi
+    gpu:
+      count: 0
+      accelerator: 'nvidia-A100'
+  - languages:
       - as
       - mr
     gpu:
       count: 0
       accelerator: 'nvidia-A100'
   - languages:
+      - mai
       - gu
+    gpu:
+      count: 0
+      accelerator: 'nvidia-A100'
+  - languages:
       - kn
-      - ta
+      - ml
+    gpu:
+      count: 0
+      accelerator: 'nvidia-A100'
+  - languages:
       - pa
-      - raj
       - te
     gpu:
       count: 0
       accelerator: 'nvidia-A100'
   - languages:
       - ur
-      - hi
-      - ml
-      - or
-      - bho
+      - ta
     gpu:
       count: 0
       accelerator: 'nvidia-A100'
   - languages:
-      - bn
+      - hi
+    gpu:
+      count: 0
+      accelerator: 'nvidia-A100'
+  - languages:
+      - or
       - sa
-      - mai
+    gpu:
+      count: 0
+      accelerator: 'nvidia-A100'
+  - languages:
+      - bho
+      - bn
     gpu:
       count: 0
       accelerator: 'nvidia-A100'
