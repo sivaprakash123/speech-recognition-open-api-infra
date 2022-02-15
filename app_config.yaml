@@ -57,4 +57,4 @@ config:
       - bn
     gpu:
       count: 0
-      accelerator: 'nvidia-A100'
+      accelerator: 'Tesla-T4'
