@@ -5,6 +5,7 @@ config:
     gpu:
       count: 0
       accelerator: ''
+    replicaCount: 1
   - languages:
       - ne
       - doi
