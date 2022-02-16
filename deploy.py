@@ -61,7 +61,7 @@ class LanguageConfig:
     def get_language_code_as_list(self):
         return [self.language_code]
 
-    def deploy(self, namespace, api_changed, gpu_count, enable_gpu, node_selector_accelerator, cpu_count, image_name, image_version, replicaCount):
+    def deploy(self, namespace, api_changed, gpu_count, enable_gpu, node_selector_accelerator, cpu_count, image_name, image_version, replica_count):
         is_deployed = self.is_deployed(namespace)
         print("IS_DEPLOYED", is_deployed)
         if is_deployed == True:
@@ -82,8 +82,8 @@ class LanguageConfig:
             process, self.release_name, self.helm_chart_path, namespace, self.language_code, pull_policy, image_name,
             image_version)
 
-        if replicaCount is not None:
-            command = "{} --set replicaCount={}".format(command, replicaCount)
+        if replica_count is not None:
+            command = "{} --set replicaCount={}".format(command, replica_count)
         
         if enable_gpu == True:
             command = "{} {}".format(command, set_gpu_command)
@@ -115,7 +115,7 @@ class MultiLanguageConfig:
     def get_language_code_as_list(self):
         return self.language_code_list
 
-    def deploy(self, namespace, api_changed, gpu_count, enable_gpu, node_selector_accelerator, cpu_count, image_name, image_version, replicaCount):
+    def deploy(self, namespace, api_changed, gpu_count, enable_gpu, node_selector_accelerator, cpu_count, image_name, image_version, replica_count):
         if len(self.language_code_list) == 0:
             raise ValueError("No Language codes present.Please add language codes or remove the item from list")
             return
@@ -141,8 +141,8 @@ class MultiLanguageConfig:
             process, self.release_name, self.helm_chart_path, namespace, languages, pull_policy, image_name,
             image_version)
         
-        if replicaCount is not None:
-            command = "{} --set replicaCount={}".format(command, replicaCount)
+        if replica_count is not None:
+            command = "{} --set replicaCount={}".format(command, replica_count)
 
         if enable_gpu == True:
             command = "{} {}".format(command, set_gpu_command)
@@ -478,7 +478,7 @@ if __name__ == "__main__":
         enable_gpu = False
         node_selector_accelerator = ""
         languages = []
-        replicaCount = None
+        replica_count = None
         if "languages" in item:
             languages = item["languages"]
         if "gpu" in item:
@@ -488,21 +488,21 @@ if __name__ == "__main__":
         if "cpu" in item:
             cpu_count = item["cpu"]["count"]
         if "replicaCount" in item:
-            replicaCount = item["replicaCount"]
-            if replicaCount == 0:
-                replicaCount = None
+            replica_count = item["replicaCount"]
+            if replica_count == 0:
+                replica_count = None
 
         if len(languages) == 0:
             continue
         elif len(languages) == 1:
             language_code = languages[0]
             language_config = LanguageConfig(language_code, release_base_name, language_helm_chart_path)
-            language_config.deploy(namespace, api_updated, gpu_count, enable_gpu, node_selector_accelerator, cpu_count, image_name, image_version, replicaCount)
+            language_config.deploy(namespace, api_updated, gpu_count, enable_gpu, node_selector_accelerator, cpu_count, image_name, image_version, replica_count)
             envoy_config = update_envoy_config(envoy_config, language_config)
             new_releases.append(language_config.release_name)
         else:
             language_config = MultiLanguageConfig(languages, release_base_name, language_helm_chart_path)
-            language_config.deploy(namespace, api_updated, gpu_count, enable_gpu, node_selector_accelerator, cpu_count, image_name, image_version, replicaCount)
+            language_config.deploy(namespace, api_updated, gpu_count, enable_gpu, node_selector_accelerator, cpu_count, image_name, image_version, replica_count)
             envoy_config = update_envoy_config(envoy_config, language_config)
             new_releases.append(language_config.release_name)
 
