@@ -88,10 +88,10 @@ class LanguageConfig:
         if enable_gpu:
             command = "{} {}".format(command, set_gpu_command)
             if cuda_visible_devices is not None:
-                command = '{} --set env.CUDA_VISIBLE_DEVICES="{}"'.format(set_gpu_command, cuda_visible_devices)
+                command = '{} --set env.CUDA_VISIBLE_DEVICES="{}"'.format(command, cuda_visible_devices)
         else:
             command = "{} {}".format(command, set_cpu_command)
-        print(command)
+        print('Running command: ', command)
         cmd_runner(command, "LANGUAGE :" + self.language_code)
 
 
@@ -149,10 +149,10 @@ class MultiLanguageConfig:
         if enable_gpu:
             command = "{} {}".format(command, set_gpu_command)
             if cuda_visible_devices is not None:
-                command = '{} --set env.CUDA_VISIBLE_DEVICES="{}"'.format(set_gpu_command, cuda_visible_devices)
+                command = '{} --set env.CUDA_VISIBLE_DEVICES="{}"'.format(command, cuda_visible_devices)
         else:
             command = "{} {}".format(command, set_cpu_command)
-        print(command)
+        print('Running command: ', command)
         cmd_runner(command, "LANGUAGE :" + ",".join(self.language_code_list))
 
 
