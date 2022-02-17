@@ -5,57 +5,68 @@ config:
     gpu:
       count: 0
       accelerator: 'nvidia-A100'
-    replicaCount: 2
+      CUDA_VISIBLE_DEVICES: "1"
+    replicaCount: 3
   - languages:
       - ne
       - doi
     gpu:
       count: 0
       accelerator: 'nvidia-A100'
+      CUDA_VISIBLE_DEVICES: "1"
   - languages:
       - as
       - mr
     gpu:
       count: 0
       accelerator: 'nvidia-A100'
+      CUDA_VISIBLE_DEVICES: "1"
   - languages:
       - mai
       - gu
     gpu:
       count: 0
       accelerator: 'nvidia-A100'
+      CUDA_VISIBLE_DEVICES: "1"
   - languages:
       - kn
       - ml
     gpu:
       count: 0
       accelerator: 'nvidia-A100'
+      CUDA_VISIBLE_DEVICES: "1"
   - languages:
       - pa
       - te
     gpu:
       count: 0
       accelerator: 'nvidia-A100'
+      CUDA_VISIBLE_DEVICES: "2"
   - languages:
       - ur
       - ta
     gpu:
       count: 0
       accelerator: 'nvidia-A100'
+      CUDA_VISIBLE_DEVICES: "2"
   - languages:
       - hi
     gpu:
       count: 0
       accelerator: 'nvidia-A100'
+      CUDA_VISIBLE_DEVICES: "2"
+    replicaCount: 3
   - languages:
       - or
       - sa
     gpu:
       count: 0
       accelerator: 'nvidia-A100'
+      CUDA_VISIBLE_DEVICES: "2"
   - languages:
       - bho
       - bn
     gpu:
       count: 0
       accelerator: 'nvidia-A100'
+      CUDA_VISIBLE_DEVICES: "2"
