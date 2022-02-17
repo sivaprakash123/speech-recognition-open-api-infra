@@ -41,7 +41,7 @@ config:
       - ta
     gpu:
       count: 0
-      accelerator: 'Tesla-T4'
+      accelerator: 'nvidia-A100'
   - languages:
       - hi
     gpu:
