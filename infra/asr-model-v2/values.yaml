@@ -96,4 +96,4 @@ env:
  gpu: true
  log_level: "INFO"
  max_workers: 10
- CUDA_VISIBLE_DEVICES: "1,2,3"
+ CUDA_VISIBLE_DEVICES: "0"
