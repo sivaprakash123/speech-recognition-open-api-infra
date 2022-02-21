@@ -5,7 +5,7 @@ config:
     gpu:
       count: 0
       accelerator: 'nvidia-A100'
-      CUDA_VISIBLE_DEVICES: "1"
+      CUDA_VISIBLE_DEVICES: "2"
     replicaCount: 3
   - languages:
       - ne
@@ -69,4 +69,4 @@ config:
     gpu:
       count: 0
       accelerator: 'nvidia-A100'
-      CUDA_VISIBLE_DEVICES: "2"
+      CUDA_VISIBLE_DEVICES: "1"
