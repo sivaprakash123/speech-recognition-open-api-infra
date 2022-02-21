@@ -22,7 +22,7 @@ config:
       accelerator: 'nvidia-A100'
       CUDA_VISIBLE_DEVICES: "1"
   - languages:
-      - mai
+      - bn
       - gu
     gpu:
       count: 0
@@ -65,7 +65,7 @@ config:
       CUDA_VISIBLE_DEVICES: "2"
   - languages:
       - bho
-      - bn
+      - mai
     gpu:
       count: 0
       accelerator: 'nvidia-A100'
