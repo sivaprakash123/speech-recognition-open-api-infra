@@ -7,7 +7,6 @@ config:
       accelerator: 'nvidia-A100'
       CUDA_VISIBLE_DEVICES: "2"
     replicaCount: 3
-    nodeName: "scn32-100g"
   - languages:
       - ne
       - doi

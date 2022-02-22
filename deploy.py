@@ -40,6 +40,21 @@ def cmd_runner(command, caller):
         print("Helm => ", caller, " Out => ", result.stdout.decode('utf-8'), "\n")
 
 
+def append_config(command, cuda_visible_devices, enable_gpu, node_name, replica_count, cpu_command, gpu_command):
+    if replica_count is not None:
+        command = "{} --set replicaCount={}".format(command, replica_count)
+    if node_name is not None:
+        command = "{} --set nodeSelector.nodeName={}".format(command, node_name)
+    if enable_gpu:
+        command = "{} {}".format(command, gpu_command)
+        if cuda_visible_devices is not None:
+            command = '{} --set env.CUDA_VISIBLE_DEVICES="{}"'.format(command, cuda_visible_devices)
+    else:
+        command = "{} {}".format(command, cpu_command)
+    print('Running command: ', command)
+    return command
+
+
 class LanguageConfig:
 
     def __init__(self, language_code, base_name, helm_chart_path):
@@ -85,18 +100,8 @@ class LanguageConfig:
             process, self.release_name, self.helm_chart_path, namespace, self.language_code, pull_policy, image_name,
             image_version)
 
-        if replica_count is not None:
-            command = "{} --set replicaCount={}".format(command, replica_count)
-
-        if node_name is not None:
-            command = "{} --set nodeSelector.nodeName={}".format(command, node_name)
-
-        if enable_gpu:
-            command = "{} {}".format(command, set_gpu_command)
-            if cuda_visible_devices is not None:
-                command = '{} --set env.CUDA_VISIBLE_DEVICES="{}"'.format(command, cuda_visible_devices)
-        else:
-            command = "{} {}".format(command, set_cpu_command)
+        command = append_config(command, cuda_visible_devices, enable_gpu, node_name, replica_count,
+                                set_cpu_command, set_gpu_command)
         print('Running command: ', command)
         cmd_runner(command, "LANGUAGE :" + self.language_code)
 
@@ -152,18 +157,8 @@ class MultiLanguageConfig:
             process, self.release_name, self.helm_chart_path, namespace, languages, pull_policy, image_name,
             image_version)
 
-        if replica_count is not None:
-            command = "{} --set replicaCount={}".format(command, replica_count)
-
-        if node_name is not None:
-            command = "{} --set nodeSelector.nodeName={}".format(command, node_name)
-
-        if enable_gpu:
-            command = "{} {}".format(command, set_gpu_command)
-            if cuda_visible_devices is not None:
-                command = '{} --set env.CUDA_VISIBLE_DEVICES="{}"'.format(command, cuda_visible_devices)
-        else:
-            command = "{} {}".format(command, set_cpu_command)
+        command = append_config(command, cuda_visible_devices, enable_gpu, node_name, replica_count,
+                                set_cpu_command, set_gpu_command)
         print('Running command: ', command)
         cmd_runner(command, "LANGUAGE :" + ",".join(self.language_code_list))
 
