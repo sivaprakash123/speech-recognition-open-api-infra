@@ -44,7 +44,7 @@ def append_config(command, cuda_visible_devices, enable_gpu, node_name, replica_
     if replica_count is not None:
         command = "{} --set replicaCount={}".format(command, replica_count)
     if node_name is not None:
-        command = "{} --set nodeSelector.nodeName={}".format(command, node_name)
+        command = "{} --set nodeSelector.kubernetes.io/hostname={}".format(command, node_name)
     if enable_gpu:
         command = "{} {}".format(command, gpu_command)
         if cuda_visible_devices is not None:
