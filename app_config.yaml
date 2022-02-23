@@ -15,6 +15,7 @@ config:
       count: 0
       accelerator: 'nvidia-A100'
       CUDA_VISIBLE_DEVICES: "1"
+    nodeName: "scn32-100g"
   - languages:
       - as
       - mr
@@ -22,6 +23,7 @@ config:
       count: 0
       accelerator: 'nvidia-A100'
       CUDA_VISIBLE_DEVICES: "1"
+    nodeName: "scn32-100g"
   - languages:
       - bn
       - gu
@@ -29,6 +31,7 @@ config:
       count: 0
       accelerator: 'nvidia-A100'
       CUDA_VISIBLE_DEVICES: "1"
+    nodeName: "scn32-100g"
   - languages:
       - kn
       - ml
@@ -36,6 +39,7 @@ config:
       count: 0
       accelerator: 'nvidia-A100'
       CUDA_VISIBLE_DEVICES: "1"
+    nodeName: "scn32-100g"
   - languages:
       - pa
       - te
@@ -43,6 +47,7 @@ config:
       count: 0
       accelerator: 'nvidia-A100'
       CUDA_VISIBLE_DEVICES: "2"
+    nodeName: "scn32-100g"
   - languages:
       - ur
       - ta
@@ -50,12 +55,14 @@ config:
       count: 0
       accelerator: 'nvidia-A100'
       CUDA_VISIBLE_DEVICES: "2"
+    nodeName: "scn32-100g"
   - languages:
       - hi
     gpu:
       count: 0
       accelerator: 'nvidia-A100'
       CUDA_VISIBLE_DEVICES: "2"
+    nodeName: "scn32-100g"
     replicaCount: 3
   - languages:
       - or
@@ -64,6 +71,7 @@ config:
       count: 0
       accelerator: 'nvidia-A100'
       CUDA_VISIBLE_DEVICES: "2"
+    nodeName: "scn32-100g"
   - languages:
       - bho
       - mai
@@ -71,3 +79,4 @@ config:
       count: 0
       accelerator: 'nvidia-A100'
       CUDA_VISIBLE_DEVICES: "1"
+    nodeName: "scn32-100g"
