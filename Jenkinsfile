@@ -12,7 +12,7 @@ pipeline {
                                 name: 'API_UPDATED'
                             ),
                             booleanParam(
-                                defaultValue: true, 
+                                defaultValue: false,
                                 name: 'ENABLE_INGRESS'
                             ),
                             string(
@@ -24,7 +24,7 @@ pipeline {
                                 name: 'IMAGE_NAME'
                             ),
                             string(
-                                defaultValue: '2.1.2', 
+                                defaultValue: '3.2.34',
                                 name: 'IMAGE_VERSION'
                             )
                         ])
