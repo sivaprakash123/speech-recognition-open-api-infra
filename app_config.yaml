@@ -19,7 +19,7 @@ config:
       count: 0
       accelerator: ''
   - languages:
-      - bn
+      - mai
       - gu
     gpu:
       count: 0
@@ -55,7 +55,7 @@ config:
       accelerator: ''
   - languages:
       - bho
-      - mai
+      - bn
     gpu:
       count: 0
       accelerator: ''
