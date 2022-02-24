@@ -487,6 +487,7 @@ if __name__ == "__main__":
         languages = []
         replica_count = None
         node_name = None
+        CUDA_VISIBLE_DEVICES = None
         if "languages" in item:
             languages = item["languages"]
         if "gpu" in item:
