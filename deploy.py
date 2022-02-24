@@ -40,25 +40,6 @@ def cmd_runner(command, caller):
         print("Helm => ", caller, " Out => ", result.stdout.decode('utf-8'), "\n")
 
 
-def append_config(command, cuda_visible_devices, enable_gpu, node_name, replica_count, gpu_count, cpu_count,
-                  node_selector_accelerator):
-    gpu_command = "--set resources.limits.\"nvidia\.com/gpu\"='{}' --set env.gpu='{}' --set nodeSelector.accelerator='{}'".format(
-        gpu_count, enable_gpu, node_selector_accelerator)
-    cpu_command = "--set resources.requests.cpu='{}' --set env.gpu='{}'".format(cpu_count, False)
-    if replica_count is not None:
-        command = "{} --set replicaCount={}".format(command, replica_count)
-    if node_name is not None:
-        command = "{} --set nodeSelector.\"kubernetes\.io/hostname\"={}".format(command, node_name)
-    if enable_gpu:
-        command = "{} {}".format(command, gpu_command)
-        if cuda_visible_devices is not None:
-            command = '{} --set env.CUDA_VISIBLE_DEVICES="{}"'.format(command, cuda_visible_devices)
-    else:
-        command = "{} {}".format(command, cpu_command)
-    print('Running command: ', command)
-    return command
-
-
 class LanguageConfig:
 
     def __init__(self, language_code, base_name, helm_chart_path):
@@ -80,15 +61,15 @@ class LanguageConfig:
     def get_language_code_as_list(self):
         return [self.language_code]
 
-    def deploy(self, namespace, api_changed, gpu_count, enable_gpu, node_selector_accelerator, cpu_count, image_name,
-               image_version, replica_count, cuda_visible_devices,
-               node_name=None):
+    def deploy(self, namespace, api_changed, gpu_count, enable_gpu, cpu_count, image_name,
+               image_version, replicaCount):
         is_deployed = self.is_deployed(namespace)
         print("IS_DEPLOYED", is_deployed)
         if is_deployed == True:
             process = "upgrade"
             if api_changed == True:
-                uninstall_command = "helm uninstall {0} --namespace {1}".format(self.release_name, namespace)
+                uninstall_command = "helm uninstall {0} --namespace {1}".format(self.release_name,
+                                                                                namespace)
                 cmd_runner(uninstall_command, "LANGUAGE :" + self.language_code)
                 process = "install"
         else:
@@ -96,13 +77,24 @@ class LanguageConfig:
 
         pull_policy = "Always" if api_changed == True else "IfNotPresent"
 
-        command = "helm {0} --timeout 180s {1} {2} --namespace {3} --set env.languages='[\"{4}\"]' --set image.pullPolicy='{5}' --set image.repository='{6}' --set image.tag='{7}'".format(
-            process, self.release_name, self.helm_chart_path, namespace, self.language_code, pull_policy, image_name,
-            image_version)
+        set_gpu_command = "--set resources.limits.\"nvidia\.com/gpu\"='{}' --set env.gpu='{}'".format(
+            gpu_count, enable_gpu)
+        set_cpu_command = "--set resources.requests.cpu='{}' --set env.gpu='{}'".format(cpu_count, False)
 
-        command = append_config(command, cuda_visible_devices, enable_gpu, node_name, replica_count, gpu_count,
-                                cpu_count, node_selector_accelerator)
-        print('Running command: ', command)
+        command = "helm {0} --timeout 180s {1} {2} --namespace {3} --set env.languages='[\"{4}\"]' --set image.pullPolicy='{5}' --set image.repository='{6}' --set image.tag='{7}'".format(
+            process, self.release_name, self.helm_chart_path, namespace, self.language_code,
+            pull_policy, image_name,
+            image_version)
+        
+        if replicaCount is not None:
+            command = "{} --set replicaCount={}".format(command, replicaCount)
+
+
+        if enable_gpu == True:
+            command = "{} {}".format(command, set_gpu_command)
+        else:
+            command = "{} {}".format(command, set_cpu_command)
+        print(command)
         cmd_runner(command, "LANGUAGE :" + self.language_code)
 
 
@@ -128,15 +120,14 @@ class MultiLanguageConfig:
     def get_language_code_as_list(self):
         return self.language_code_list
 
-    def deploy(self, namespace, api_changed, gpu_count, enable_gpu, node_selector_accelerator, cpu_count, image_name,
-               image_version, replica_count, cuda_visible_devices,
-               node_name=None):
+    def deploy(self, namespace, api_changed, gpu_count, enable_gpu, cpu_count, image_name,
+               image_version, replicaCount):
         if len(self.language_code_list) == 0:
             raise ValueError("No Language codes present.Please add language codes or remove the item from list")
             return
         is_deployed = self.is_deployed(namespace)
         print("IS_DEPLOYED", is_deployed)
-        if is_deployed:
+        if is_deployed == True:
             process = "upgrade"
             if api_changed == True:
                 uninstall_command = "helm uninstall {0} --namespace {1}".format(self.release_name, namespace)
@@ -147,15 +138,24 @@ class MultiLanguageConfig:
 
         pull_policy = "Always" if api_changed == True else "IfNotPresent"
 
+        set_gpu_command = "--set resources.limits.\"nvidia\.com/gpu\"='{}' --set env.gpu='{}'".format(
+            gpu_count, enable_gpu)
+        set_cpu_command = "--set resources.requests.cpu='{}' --set env.gpu='{}'".format(cpu_count, False)
+
         languages = ["\"{}\"".format(x) for x in self.language_code_list]
         languages = "\,".join(languages)
         command = "helm {0} --timeout 180s {1} {2} --namespace {3} --set env.languages='[{4}]' --set image.pullPolicy='{5}' --set image.repository='{6}' --set image.tag='{7}'".format(
             process, self.release_name, self.helm_chart_path, namespace, languages, pull_policy, image_name,
             image_version)
 
-        command = append_config(command, cuda_visible_devices, enable_gpu, node_name, replica_count, gpu_count,
-                                cpu_count, node_selector_accelerator)
-        print('Running command: ', command)
+        if replicaCount is not None:
+            command = "{} --set replicaCount={}".format(command, replicaCount)
+        
+        if enable_gpu == True:
+            command = "{} {}".format(command, set_gpu_command)
+        else:
+            command = "{} {}".format(command, set_cpu_command)
+        print(command)
         cmd_runner(command, "LANGUAGE :" + ",".join(self.language_code_list))
 
 
@@ -256,8 +256,8 @@ def clear_clusters_and_matches(config, removed_releases):
 
     for cluster in clusters:
         address = \
-            cluster["load_assignment"]["endpoints"][0]["lb_endpoints"][0]["endpoint"]["address"]["socket_address"][
-                "address"]
+        cluster["load_assignment"]["endpoints"][0]["lb_endpoints"][0]["endpoint"]["address"]["socket_address"][
+            "address"]
         if address.rstrip().lstrip() in removed_releases:
             clusters.remove(cluster)
         cluster_name = cluster["name"]
@@ -483,45 +483,34 @@ if __name__ == "__main__":
         gpu_count = 0
         cpu_count = 0
         enable_gpu = False
-        node_selector_accelerator = ""
         languages = []
-        replica_count = None
-        node_name = None
-        CUDA_VISIBLE_DEVICES = None
+        replicaCount = None
         if "languages" in item:
             languages = item["languages"]
         if "gpu" in item:
             gpu_count = item["gpu"]["count"]
             enable_gpu = True
-            node_selector_accelerator = item["gpu"]["accelerator"]
-            if "CUDA_VISIBLE_DEVICES" in item["gpu"]:
-                CUDA_VISIBLE_DEVICES = item["gpu"]["CUDA_VISIBLE_DEVICES"]
-                if CUDA_VISIBLE_DEVICES == "":
-                    CUDA_VISIBLE_DEVICES = None
         if "cpu" in item:
             cpu_count = item["cpu"]["count"]
-
+        
         if "replicaCount" in item:
-            replica_count = item["replicaCount"]
-            if replica_count == 0:
-                replica_count = None
-
-        if "nodeName" in item:
-            node_name = item["nodeName"]
+            replicaCount = item["replicaCount"]
+            if replicaCount == 0:
+                replicaCount = None
 
         if len(languages) == 0:
             continue
         elif len(languages) == 1:
             language_code = languages[0]
             language_config = LanguageConfig(language_code, release_base_name, language_helm_chart_path)
-            language_config.deploy(namespace, api_updated, gpu_count, enable_gpu, node_selector_accelerator, cpu_count,
-                                   image_name, image_version, replica_count, CUDA_VISIBLE_DEVICES, node_name)
+            language_config.deploy(namespace, api_updated, gpu_count, enable_gpu, cpu_count,
+                                   image_name, image_version, replicaCount)
             envoy_config = update_envoy_config(envoy_config, language_config)
             new_releases.append(language_config.release_name)
         else:
             language_config = MultiLanguageConfig(languages, release_base_name, language_helm_chart_path)
-            language_config.deploy(namespace, api_updated, gpu_count, enable_gpu, node_selector_accelerator, cpu_count,
-                                   image_name, image_version, replica_count, CUDA_VISIBLE_DEVICES, node_name)
+            language_config.deploy(namespace, api_updated, gpu_count, enable_gpu, cpu_count,
+                                   image_name, image_version, replicaCount)
             envoy_config = update_envoy_config(envoy_config, language_config)
             new_releases.append(language_config.release_name)
 
