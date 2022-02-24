@@ -40,16 +40,22 @@ def cmd_runner(command, caller):
         print("Helm => ", caller, " Out => ", result.stdout.decode('utf-8'), "\n")
 
 
-def append_config(command, cuda_visible_devices, enable_gpu, node_name, replica_count, cpu_command, gpu_command):
-    if replica_count is not None:
+def append_config(command, cuda_visible_devices, enable_gpu, node_name, replica_count, gpu_count, cpu_count,
+                  node_selector_accelerator):
+    if replica_count:
         command = "{} --set replicaCount={}".format(command, replica_count)
-    if node_name is not None:
+    if node_name:
         command = "{} --set nodeSelector.\"kubernetes\.io/hostname\"={}".format(command, node_name)
+
     if enable_gpu:
+        gpu_command = "--set resources.limits.\"nvidia\.com/gpu\"='{}' --set env.gpu='{}'".format(gpu_count, enable_gpu)
         command = "{} {}".format(command, gpu_command)
-        if cuda_visible_devices is not None:
+        if cuda_visible_devices:
             command = '{} --set env.CUDA_VISIBLE_DEVICES="{}"'.format(command, cuda_visible_devices)
+        if node_selector_accelerator:
+            command = '{} --set nodeSelector.accelerator="{}"'.format(command, node_selector_accelerator)
     else:
+        cpu_command = "--set resources.requests.cpu='{}' --set env.gpu='{}'".format(cpu_count, False)
         command = "{} {}".format(command, cpu_command)
     print('Running command: ', command)
     return command
@@ -60,7 +66,7 @@ class LanguageConfig:
     def __init__(self, language_code, base_name, helm_chart_path):
         self.language_code = language_code
         self.helm_chart_path = helm_chart_path
-        self.release_name = "{}-{}".format(base_name, language_code)
+        self.release_name = "{}-{}".format(base_name, language_code).replace('_', '-')
         print("Release name", self.release_name)
 
     def is_deployed(self, namespace):
@@ -92,16 +98,12 @@ class LanguageConfig:
 
         pull_policy = "Always" if api_changed == True else "IfNotPresent"
 
-        set_gpu_command = "--set resources.limits.\"nvidia\.com/gpu\"='{}' --set env.gpu='{}' --set nodeSelector.accelerator='{}'".format(
-            gpu_count, enable_gpu, node_selector_accelerator)
-        set_cpu_command = "--set resources.requests.cpu='{}' --set env.gpu='{}'".format(cpu_count, False)
-
         command = "helm {0} --timeout 180s {1} {2} --namespace {3} --set env.languages='[\"{4}\"]' --set image.pullPolicy='{5}' --set image.repository='{6}' --set image.tag='{7}'".format(
             process, self.release_name, self.helm_chart_path, namespace, self.language_code, pull_policy, image_name,
             image_version)
 
-        command = append_config(command, cuda_visible_devices, enable_gpu, node_name, replica_count,
-                                set_cpu_command, set_gpu_command)
+        command = append_config(command, cuda_visible_devices, enable_gpu, node_name, replica_count, gpu_count,
+                                cpu_count, node_selector_accelerator)
         print('Running command: ', command)
         cmd_runner(command, "LANGUAGE :" + self.language_code)
 
@@ -112,7 +114,7 @@ class MultiLanguageConfig:
         self.language_code_list = language_code_list
         self.helm_chart_path = helm_chart_path
         self.languages_codes_string = "-".join(language_code_list)
-        self.release_name = "{}-{}".format(base_name, self.languages_codes_string)
+        self.release_name = "{}-{}".format(base_name, self.languages_codes_string).replace('_', '-')
         print("Release name", self.release_name)
 
     def is_deployed(self, namespace):
@@ -147,18 +149,14 @@ class MultiLanguageConfig:
 
         pull_policy = "Always" if api_changed == True else "IfNotPresent"
 
-        set_gpu_command = "--set resources.limits.\"nvidia\.com/gpu\"='{}' --set env.gpu='{}' --set nodeSelector.accelerator='{}'".format(
-            gpu_count, enable_gpu, node_selector_accelerator)
-        set_cpu_command = "--set resources.requests.cpu='{}' --set env.gpu='{}'".format(cpu_count, False)
-
         languages = ["\"{}\"".format(x) for x in self.language_code_list]
         languages = "\,".join(languages)
         command = "helm {0} --timeout 180s {1} {2} --namespace {3} --set env.languages='[{4}]' --set image.pullPolicy='{5}' --set image.repository='{6}' --set image.tag='{7}'".format(
             process, self.release_name, self.helm_chart_path, namespace, languages, pull_policy, image_name,
             image_version)
 
-        command = append_config(command, cuda_visible_devices, enable_gpu, node_name, replica_count,
-                                set_cpu_command, set_gpu_command)
+        command = append_config(command, cuda_visible_devices, enable_gpu, node_name, replica_count, gpu_count,
+                                cpu_count, node_selector_accelerator)
         print('Running command: ', command)
         cmd_runner(command, "LANGUAGE :" + ",".join(self.language_code_list))
 
@@ -491,6 +489,7 @@ if __name__ == "__main__":
         languages = []
         replica_count = None
         node_name = None
+        CUDA_VISIBLE_DEVICES = None
         if "languages" in item:
             languages = item["languages"]
         if "gpu" in item:
@@ -503,6 +502,7 @@ if __name__ == "__main__":
                     CUDA_VISIBLE_DEVICES = None
         if "cpu" in item:
             cpu_count = item["cpu"]["count"]
+
         if "replicaCount" in item:
             replica_count = item["replicaCount"]
             if replica_count == 0:
