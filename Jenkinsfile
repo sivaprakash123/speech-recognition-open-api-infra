@@ -15,6 +15,10 @@ pipeline {
                                 defaultValue: false, 
                                 name: 'ENABLE_INGRESS'
                             ),
+                            booleanParam(
+                                defaultValue: true, 
+                                name: 'ENABLE_ENVOY_ADMIN'
+                            ),
                             string(
                                 defaultValue: 'asr-model-v2', 
                                 name: 'NAMESPACE'
@@ -42,7 +46,7 @@ pipeline {
 	                string(credentialsId: 'meity-eks-iam-secret', variable: 'AWS_SECRET_ACCESS_KEY')
                 ]) {
                     sh 'python3 -m pip install pyyaml'
-                    sh "python3 deploy.py --namespace $params.NAMESPACE --api-updated $params.API_UPDATED --enable-ingress $params.ENABLE_INGRESS --image-name $params.IMAGE_NAME --image-version $params.IMAGE_VERSION"
+                    sh "python3 deploy.py --namespace $params.NAMESPACE --api-updated $params.API_UPDATED --enable-ingress $params.ENABLE_INGRESS --image-name $params.IMAGE_NAME --image-version $params.IMAGE_VERSION --enable-envoy-admin $params.ENABLE_ENVOY_ADMIN"
                 }
             }
         }

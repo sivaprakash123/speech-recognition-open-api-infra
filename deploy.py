@@ -175,18 +175,19 @@ class EnvoyConfig:
         else:
             return True
 
-    def deploy(self, namespace, enable_ingress):
+    def deploy(self, namespace, enable_ingress, enable_envoy_admin):
         isdeployed = self.is_deployed(namespace)
         if not isdeployed:
             process = "install"
         else:
             process = "upgrade"
 
-        command = "helm {0} --timeout 180s {1} {2} --namespace {3} --set ingress.enabled='{4}'".format(process,
+        command = "helm {0} --timeout 180s {1} {2} --namespace {3} --set ingress.enabled='{4}' --set envoyAdmin.enabled='{5}'".format(process,
                                                                                                        self.release_name,
                                                                                                        self.helm_chart_path,
                                                                                                        namespace,
-                                                                                                       enable_ingress)
+                                                                                                       enable_ingress,
+                                                                                                       enable_envoy_admin)
         cmd_runner(command, "Envoy")
 
 
@@ -307,6 +308,15 @@ def verify_and_update_release_name(cluster, release_name):
         cluster["load_assignment"]["endpoints"][0]["lb_endpoints"][0]["endpoint"]["address"]["socket_address"][
             "address"] = release_name
 
+def update_envoy_config_for_admin(config):
+    admin_config = '''
+    admin:
+      address:
+        socket_address: {address: 0.0.0.0, port_value: 9901}
+    '''
+    admin_config = ordered_load(admin_config, yaml.SafeLoader)
+    config.update(admin_config)
+    return config
 
 def update_envoy_config(config, language_config):
     methods_config = [
@@ -441,6 +451,7 @@ if __name__ == "__main__":
     parser.add_argument('--image-name', help="Model api image name", required=True)
     parser.add_argument('--image-version', help="Model api image version", required=True)
     parser.add_argument('--api-updated', default='false', help="Flag if api has changed")
+    parser.add_argument('--enable-envoy-admin', default='true', help="Flag if envoy admin is to be deployed")
 
     args = parser.parse_args()
 
@@ -449,6 +460,7 @@ if __name__ == "__main__":
     image_version = args.image_version
     namespace = args.namespace
     api_updated = args.api_updated
+    enable_envoy_admin = args.enable_envoy_admin
     app_config_path = "app_config.yaml"
     envoy_config_path = "infra/envoy/config.yaml"
     language_helm_chart_path = "infra/asr-model-v2"
@@ -468,6 +480,11 @@ if __name__ == "__main__":
         enable_ingress = True
     else:
         enable_ingress = False
+
+    if enable_envoy_admin == 'true':
+        enable_envoy_admin = True
+    else:
+        enable_envoy_admin = False
 
     if envoy_config is None:
         print("Check the envoy config file")
@@ -529,6 +546,8 @@ if __name__ == "__main__":
 
     remove_unwanted_releases(new_releases, existing_releases, namespace)
 
+    if enable_envoy_admin == True:
+        envoy_config = update_envoy_config_for_admin(envoy_config)
     write_to_yaml(envoy_config, envoy_config_path)
-    EnvoyConfig(release_base_name, envoy_helm_chart_path).deploy(namespace, enable_ingress)
+    EnvoyConfig(release_base_name, envoy_helm_chart_path).deploy(namespace, enable_ingress, enable_envoy_admin)
     ProxyConfig(release_base_name, proxy_helm_chart_path).deploy(namespace)
