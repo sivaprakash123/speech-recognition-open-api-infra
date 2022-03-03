@@ -119,3 +119,6 @@ containerPort: 51051
 
 # containerPort -- container port, should match admin port_value from config.yaml
 containerAdminPort: 9901
+
+envoyAdmin:
+  enabled: true
