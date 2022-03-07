@@ -16,7 +16,7 @@ pipeline {
                                 name: 'ENABLE_INGRESS'
                             ), 
                             booleanParam(
-                                defaultValue: true, 
+                                defaultValue: false, 
                                 name: 'ENABLE_ENVOY_ADMIN'
                             ),
                             string(
