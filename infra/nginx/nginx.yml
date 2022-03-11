@@ -94,7 +94,7 @@ spec:
           readOnly: true
           name: test-nginx-conf
       nodeSelector:
-        name: workload
+        agentpool: asr
       volumes:
       - name: test-nginx-conf
         configMap:

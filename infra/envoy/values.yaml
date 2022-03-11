@@ -65,7 +65,7 @@ resources: {}
 
 # nodeSelector -- node for scheduler pod assignment
 nodeSelector:
-  name: workload
+  agentpool : asr
 
 # tolerations -- tolerations for scheduler pod assignment
 tolerations: []
