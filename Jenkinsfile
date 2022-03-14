@@ -40,14 +40,8 @@ pipeline {
             steps {
                 sh "chmod +x ./scripts/install_helm.sh"
                 sh "./scripts/install_helm.sh"
-                withCredentials([
-                    file(credentialsId: 'meity-eks-kube', variable: 'KUBECONFIG'),
-                    string(credentialsId: 'meity-eks-iam-access', variable: 'AWS_ACCESS_KEY_ID'),
-	                string(credentialsId: 'meity-eks-iam-secret', variable: 'AWS_SECRET_ACCESS_KEY')
-                ]) {
-                    sh 'python3 -m pip install pyyaml'
-                    sh "python3 deploy.py --namespace $params.NAMESPACE --api-updated $params.API_UPDATED --enable-ingress $params.ENABLE_INGRESS --image-name $params.IMAGE_NAME --image-version $params.IMAGE_VERSION --enable-envoy-admin $params.ENABLE_ENVOY_ADMIN"
-                }
+                sh 'python3 -m pip install pyyaml'
+                sh "python3 deploy.py --namespace $params.NAMESPACE --api-updated $params.API_UPDATED --enable-ingress $params.ENABLE_INGRESS --image-name $params.IMAGE_NAME --image-version $params.IMAGE_VERSION --enable-envoy-admin $params.ENABLE_ENVOY_ADMIN"
             }
         }
     }
