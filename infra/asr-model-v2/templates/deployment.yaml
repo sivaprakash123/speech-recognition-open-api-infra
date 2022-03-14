@@ -28,9 +28,10 @@ spec:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       volumes:
         - name: {{ .Values.volumes.name }}
-          hostPath:
-            path: {{ .Values.volumes.path }}
-            type: {{ .Values.volumes.type }}
+          azureFile:
+            secretName: {{ .Values.volumes.secretName }}
+            shareName: {{ .Values.volumes.shareName }}
+            readOnly: false
       topologySpreadConstraints:
         - maxSkew: 1
           topologyKey: node
