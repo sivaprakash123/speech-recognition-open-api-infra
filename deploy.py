@@ -495,7 +495,7 @@ if __name__ == "__main__":
 
     release_base_name = app_config["base_name"]
     configuration = app_config["config"]
-
+    subprocess.run("kubectl config use-context k8s-ulca-prod")
     # existing_releases = get_releases(release_base_name, namespace)
     new_releases = []
     for item in configuration:
