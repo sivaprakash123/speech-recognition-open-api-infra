@@ -496,7 +496,7 @@ if __name__ == "__main__":
     release_base_name = app_config["base_name"]
     configuration = app_config["config"]
     cmd_runner("kubectl config use-context k8s-ulca-prod", 'set context')
-    cmd_runner(f"kubectl apply -f {language_helm_chart_path}/templates/secrets.yaml -n {namespace}", 'add secrets')
+    # cmd_runner(f"kubectl apply -f {language_helm_chart_path}/templates/secrets.yaml -n {namespace}", 'add secrets')
     # existing_releases = get_releases(release_base_name, namespace)
     new_releases = []
     for item in configuration:
