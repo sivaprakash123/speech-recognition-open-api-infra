@@ -20,7 +20,7 @@ pipeline {
                                 name: 'ENABLE_ENVOY_ADMIN'
                             ),
                             string(
-                                defaultValue: 'asr-model-v2', 
+                                defaultValue: 'asr',
                                 name: 'NAMESPACE'
                             ),
                             string(
@@ -28,7 +28,7 @@ pipeline {
                                 name: 'IMAGE_NAME'
                             ),
                             string(
-                                defaultValue: '3.0.4',
+                                defaultValue: '3.2.36',
                                 name: 'IMAGE_VERSION'
                             )
                         ])
