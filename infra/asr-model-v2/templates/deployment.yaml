@@ -33,10 +33,10 @@ spec:
             shareName: {{ .Values.volumes.shareName }}
             readOnly: false
         - name: {{ .Values.volumes.logsVolumeName }}
-            azureFile:
-              secretName: {{ .Values.volumes.secretName }}
-              shareName: {{ .Values.volumes.logsShareName }}
-              readOnly: false
+          azureFile:
+            secretName: {{ .Values.volumes.secretName }}
+            shareName: {{ .Values.volumes.logsShareName }}
+            readOnly: false
 #      topologySpreadConstraints:
 #        - maxSkew: 1
 #          topologyKey: node
