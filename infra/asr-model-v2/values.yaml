@@ -24,9 +24,12 @@ volumes:
   name: azurefileshare
   secretName: samba-blob-creds
   shareName: models
+  logsVolumeName: azurefileshare
+  logsShareName: logs
   # path: /nlsasfs/home/ekstep/nltm-speech
 #  path: /opt/models/asr_models
   type: Directory
+  logsVolumeMountPath: /opt/speech_recognition_open_api/logs/
   mountPath: /opt/speech_recognition_open_api/deployed_models/
 
 serviceAccount:
@@ -101,6 +104,8 @@ env:
  gpu : true
  log_level : "DEBUG"
  max_workers : 10
+ models_base_path : '/opt/speech_recognition_open_api/deployed_models/asr_models/'
+ model_logs_base_path : '/opt/speech_recognition_open_api/logs/asr_logs/'
 
 startup:
   initialDelaySeconds: 20

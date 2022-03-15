@@ -32,6 +32,11 @@ spec:
             secretName: {{ .Values.volumes.secretName }}
             shareName: {{ .Values.volumes.shareName }}
             readOnly: false
+        - name: {{ .Values.volumes.logsVolumeName }}
+            azureFile:
+              secretName: {{ .Values.volumes.secretName }}
+              shareName: {{ .Values.volumes.logsShareName }}
+              readOnly: false
 #      topologySpreadConstraints:
 #        - maxSkew: 1
 #          topologyKey: node
@@ -66,7 +71,10 @@ spec:
               value: {{ .Values.env.log_level | quote }}
             - name: max_workers
               value: {{ .Values.env.max_workers | quote }}
-
+            - name: models_base_path
+              value: {{ .Values.env.models_base_path | quote }}
+            - name: model_logs_base_path
+              value: {{ .Values.env.model_logs_base_path | quote }}
           ports:
             - name: grpc
               containerPort: 50051
@@ -84,6 +92,8 @@ spec:
           volumeMounts:
             - name: {{ .Values.volumes.name }}
               mountPath: {{ .Values.volumes.mountPath }}
+            - name: {{ .Values.volumes.logsVolumeName }}
+              mountPath: {{ .Values.volumes.logsVolumeMountPath }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
