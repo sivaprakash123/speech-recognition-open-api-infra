@@ -355,6 +355,8 @@ def update_envoy_config(config, language_config):
                 if rest_match_route is None:
                     rest_match_route = create_rest_match_filter(method_name, language_code, cluster["name"])
                     routes.insert(len(routes) - initial_routes_length, rest_match_route)
+                    header_content_type_mismatch_error = get_header_content_type_mismatch_error(method_name, language_code)
+                    routes.insert(len(routes) - initial_routes_length, header_content_type_mismatch_error)
 
     return config
 
@@ -399,6 +401,17 @@ def create_rest_match_filter(method_name, language_code, cluster_name):
     route_match["match"]["path"] = "/v1/{}/{}".format(method_name, language_code)
     route_match["route"]["cluster"] = cluster_name
     return route_match
+
+def get_header_content_type_mismatch_error(method_name, language_code):
+    route_match = '''
+        match:
+          path: "/v1/{}/{}"
+        direct_response:
+          status: 406
+          body:
+            inline_string: Given Content-type is not allowed
+    '''.format(method_name, language_code)
+    return ordered_load(route_match, yaml.SafeLoader)
 
 
 def get_grpc_match_filter(method_name, routes, language_code):
