@@ -39,6 +39,6 @@ config:
       - ur
       - te
       - mr
-      gpu:
-        count: 0
-        accelerator: ''
+    gpu:
+      count: 0
+      accelerator: ''
