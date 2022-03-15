@@ -182,12 +182,13 @@ class EnvoyConfig:
         else:
             process = "upgrade"
 
-        command = "helm {0} --timeout 180s {1} {2} --namespace {3} --set ingress.enabled='{4}' --set envoyAdmin.enabled='{5}'".format(process,
-                                                                                                       self.release_name,
-                                                                                                       self.helm_chart_path,
-                                                                                                       namespace,
-                                                                                                       enable_ingress,
-+                                                                                                       enable_envoy_admin)
+        command = "helm {0} --timeout 180s {1} {2} --namespace {3} --set ingress.enabled='{4}' --set envoyAdmin.enabled='{5}'".format(
+            process,
+            self.release_name,
+            self.helm_chart_path,
+            namespace,
+            enable_ingress, enable_envoy_admin)
+
         cmd_runner(command, "Envoy")
 
 
@@ -217,6 +218,7 @@ class ProxyConfig:
                                                                             self.helm_chart_path,
                                                                             namespace
                                                                             )
+        print('Running Proxy Command:', command)
         cmd_runner(command, "proxy")
 
 
