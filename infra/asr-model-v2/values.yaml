@@ -24,7 +24,7 @@ volumes:
   name: azurefileshare
   secretName: samba-blob-creds
   shareName: models
-  logsVolumeName: azurefileshare
+  logsVolumeName: azurefilesharelogs
   logsShareName: logs
   # path: /nlsasfs/home/ekstep/nltm-speech
 #  path: /opt/models/asr_models
