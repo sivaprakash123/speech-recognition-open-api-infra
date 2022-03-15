@@ -1,13 +1,13 @@
 base_name: asr-model-v2
 config:
   - languages:
-      - en
+      - ne
+      - doi
     gpu:
       count: 0
       accelerator: ''
   - languages:
-      - ne
-      - doi
+      - en
     gpu:
       count: 0
       accelerator: ''
