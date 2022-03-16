@@ -436,6 +436,7 @@ def get_header_content_type_mismatch_error(method_name, language_code):
 
 def get_releases(base_name, namespace):
     result = subprocess.getoutput('helm list -f "^{}-(.*)" -n {} -o yaml'.format(base_name, namespace))
+    result = result[result.index("- app_version"):]
     release_list = ordered_load(result, yaml.SafeLoader)
     return [release["name"] for release in release_list if
             release["name"] != "{}-envoy".format(base_name) and release["name"] != "{}-proxy".format(base_name)]
@@ -509,7 +510,7 @@ if __name__ == "__main__":
     configuration = app_config["config"]
     cmd_runner("kubectl config use-context k8s-ulca-prod", 'set context')
     # cmd_runner(f"kubectl apply -f {language_helm_chart_path}/templates/secrets.yaml -n {namespace}", 'add secrets')
-    # existing_releases = get_releases(release_base_name, namespace)
+    existing_releases = get_releases(release_base_name, namespace)
     new_releases = []
     for item in configuration:
         gpu_count = 0
@@ -557,7 +558,7 @@ if __name__ == "__main__":
             envoy_config = update_envoy_config(envoy_config, language_config)
             new_releases.append(language_config.release_name)
 
-    # remove_unwanted_releases(new_releases, existing_releases, namespace)
+    remove_unwanted_releases(new_releases, existing_releases, namespace)
 
     if enable_envoy_admin == True:
         envoy_config = update_envoy_config_for_admin(envoy_config)
