@@ -438,6 +438,7 @@ def update_proto_descriptor(config, path_to_pb_file):
 
 def get_releases(base_name, namespace):
     result = subprocess.getoutput('helm list -f "^{}-(.*)" -n {} -o yaml'.format(base_name, namespace))
+    result = result[result.index("- app_version"):]
     release_list = ordered_load(result, yaml.SafeLoader)
     return [release["name"] for release in release_list if
             release["name"] != "{}-envoy".format(base_name) and release["name"] != "{}-proxy".format(base_name)]
@@ -510,7 +511,7 @@ if __name__ == "__main__":
     release_base_name = app_config["base_name"]
     configuration = app_config["config"]
 
-    # existing_releases = get_releases(release_base_name, namespace)
+    existing_releases = get_releases(release_base_name, namespace)
     new_releases = []
     for item in configuration:
         gpu_count = 0
@@ -558,7 +559,7 @@ if __name__ == "__main__":
             envoy_config = update_envoy_config(envoy_config, language_config)
             new_releases.append(language_config.release_name)
 
-    # remove_unwanted_releases(new_releases, existing_releases, namespace)
+    remove_unwanted_releases(new_releases, existing_releases, namespace)
     if enable_envoy_admin == True:
         envoy_config = update_envoy_config_for_admin(envoy_config)
     write_to_yaml(envoy_config, envoy_config_path)
