@@ -436,6 +436,8 @@ def get_header_content_type_mismatch_error(method_name, language_code):
 
 def get_releases(base_name, namespace):
     result = subprocess.getoutput('helm list -f "^{}-(.*)" -n {} -o yaml'.format(base_name, namespace))
+    if "- app_version" not in result:
+        return []
     result = result[result.index("- app_version"):]
     release_list = ordered_load(result, yaml.SafeLoader)
     return [release["name"] for release in release_list if
