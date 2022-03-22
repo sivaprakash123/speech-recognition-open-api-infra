@@ -106,6 +106,7 @@ env:
  max_workers : 10
  models_base_path : '/opt/speech_recognition_open_api/deployed_models/asr_models/'
  model_logs_base_path : '/opt/speech_recognition_open_api/logs/asr_logs/'
+ CUDA_VISIBLE_DEVICES: "0"
 
 startup:
   initialDelaySeconds: 20

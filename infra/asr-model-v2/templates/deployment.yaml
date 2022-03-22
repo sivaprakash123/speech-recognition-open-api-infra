@@ -71,6 +71,8 @@ spec:
               value: {{ .Values.env.log_level | quote }}
             - name: max_workers
               value: {{ .Values.env.max_workers | quote }}
+            - name: CUDA_VISIBLE_DEVICES
+              value: {{ .Values.env.CUDA_VISIBLE_DEVICES | quote }}
             - name: models_base_path
               value: {{ .Values.env.models_base_path | quote }}
             - name: model_logs_base_path
