@@ -65,6 +65,8 @@ spec:
               value: {{ .Values.env.log_level | quote }}
             - name: max_workers
               value: {{ .Values.env.max_workers | quote }}
+            - name: CUDA_VISIBLE_DEVICES
+              value: {{ .Values.env.CUDA_VISIBLE_DEVICES | quote }}
 
           ports:
             - name: grpc

@@ -99,6 +99,7 @@ env:
  gpu : true
  log_level : "DEBUG"
  max_workers : 10
+ CUDA_VISIBLE_DEVICES: "0"
 
 startup:
   initialDelaySeconds: 20
