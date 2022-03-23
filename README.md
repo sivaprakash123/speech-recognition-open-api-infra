@@ -3,6 +3,7 @@
 This repo helps deploy our ASR services on different infra platforms. We use helm charts to deploy our components.
 
 ASR API Documentation: https://open-speech-ekstep.github.io/asr_model_api/
+
 Deployment Guide: https://open-speech-ekstep.github.io/api_deployment/
 
 
@@ -73,7 +74,8 @@ Example:
 python3 deploy.py --namespace asr-model-v2 --api-updated true --enable-ingress false --image-name gcr.io/ekstepspeechrecognition/speech_recognition_model_api --image-version 3.2.36 --enable-envoy-admin true
 ```
 
-Documentation Reference:
+#### Documentation Reference:
+
 ASR Repo https://github.com/Open-Speech-EkStep/speech-recognition-open-api.
 
 Developer Guide https://open-speech-ekstep.github.io/asr_model_api/
